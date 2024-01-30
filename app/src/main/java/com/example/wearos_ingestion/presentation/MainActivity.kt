@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
+    private var heartRate: Sensor? = null
     private lateinit var sensorDataTextView: TextView
     private lateinit var sendDataButton: Button
     private lateinit var sensorModel: SensorDataModel
@@ -45,18 +46,19 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         // Initialize the accelerometer sensor
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-
-
-        // Inside onCreate method
+        // Initialize the gyroscope sensor
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
 
+        //
+        heartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)
+
+        // Check if the gyroscope is available
         if (gyroscope == null) {
             Log.e("Sensor Error", "Gyroscope sensor not available on this device.")
         } else {
             Log.d("Sensor Info", "Gyroscope sensor available: $gyroscope")
             sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL)
         }
-
 
         // Check if the accelerometer is available
         if (accelerometer == null) {
@@ -65,17 +67,27 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         } else {
             // Log information about the accelerometer
             Log.d("Sensor Info", "Accelerometer sensor available: $accelerometer")
-
             // Continue with your sensor registration logic
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
         }
+        // Check if the heart rate is available
+        if (heartRate == null) {
+            // Handle the case where the accelerometer sensor is not available
+            Log.e("Sensor Error", "Heart Rate sensor not available on this device.")
+        } else {
+            // Log information about the accelerometer
+            Log.d("Sensor Info", "Heart Rate sensor available: $heartRate")
+            // Continue with your sensor registration logic
+            sensorManager.registerListener(this, heartRate, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+        // Initialize the sensor model
+        sensorModel = SensorDataModel()
 
         // Initialize UI components
         sensorDataTextView = findViewById(R.id.sensorDataTextView)
         sendDataButton = findViewById(R.id.sendDataButton)
 
-        // Initialize the sensor model
-        sensorModel = SensorDataModel()
+
 
         // Set up button click listener
         sendDataButton.setOnClickListener {
@@ -106,7 +118,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         when (event.sensor.type) {
-            Sensor.TYPE_ACCELEROMETER -> {
+            /*Sensor.TYPE_ACCELEROMETER -> {
                 // Handle accelerometer data
                 val x = event.values[0]
                 val y = event.values[1]
@@ -123,8 +135,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val timestamp = System.currentTimeMillis()
                 val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
                 sensorModel.formatSensorData("Gyroscope", x, y, z, timestamp, durationMillis)
+            }*/
+            Sensor.TYPE_HEART_RATE -> {
+                // Handle heart rate data
+                val heartRate = event.values[0]
+                val timestamp = System.currentTimeMillis()
+                val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
+                sensorModel.formatSensorData("Heart Rate", heartRate, 0f, 0f, timestamp, durationMillis)
             }
-            // Add more cases for other sensors if needed
         }
         // Update UI with raw sensor data
         updateSensorDataOnUI()

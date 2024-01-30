@@ -13,12 +13,12 @@ class SensorDataModel {
     fun formatSensorData(sensorType: String, x: Float, y: Float, z: Float, timestamp: Long, duration: Long) {
         val formattedTime = formatTimestamp(timestamp)
         val formattedData = """
-            *
+            
             Sensor Type: $sensorType,
             Sensor Data: ($x, $y, $z),
             Time: $formattedTime,
             Duration: $duration ms
-        """.trimIndent()
+        """
         sensorData.append(formattedData)
 
         // Log the formatted data for debugging
