@@ -62,6 +62,7 @@ dependencies {
 
     // Add the dependencies for any other desired Firebase products
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.android.gms:play-services-location:21.1.0")
 
     // https://firebase.google.com/docs/android/setup#available-libraries
 
@@ -71,6 +72,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:$appcompat_version")
     // For loading and tinting drawables on older versions of the platform
     implementation("androidx.appcompat:appcompat-resources:$appcompat_version")
+
+    implementation ("androidx.activity:activity-compose:1.3.0-alpha08")
+    implementation ("androidx.compose.ui:ui:1.1.0-alpha06")
+    implementation ("androidx.compose.foundation:foundation:1.1.0-alpha06")
+    implementation ("androidx.compose.material:material:1.1.0-alpha06")
 
 
 

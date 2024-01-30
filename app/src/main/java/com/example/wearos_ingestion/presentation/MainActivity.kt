@@ -11,6 +11,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.health.connect.datatypes.ExerciseRoute
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -19,15 +20,20 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.example.wearos_ingestion.R
 import com.example.wearos_ingestion.presentation.model.SensorDataModel
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Composable
+import com.google.android.gms.location.FusedLocationProviderClient
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : ComponentActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
+    private var gyroscope: Sensor? = null
     private lateinit var sensorDataTextView: TextView
     private lateinit var sendDataButton: Button
     private lateinit var sensorModel: SensorDataModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         // Initialize the accelerometer sensor
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+
+
+        // Inside onCreate method
+        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+
+        if (gyroscope == null) {
+            Log.e("Sensor Error", "Gyroscope sensor not available on this device.")
+        } else {
+            Log.d("Sensor Info", "Gyroscope sensor available: $gyroscope")
+            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+
 
         // Check if the accelerometer is available
         if (accelerometer == null) {
@@ -86,27 +105,31 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            val x = event.values[0]
-            val y = event.values[1]
-            val z = event.values[2]
-
-            val currentTimeNano = System.nanoTime()
-            val durationNano = currentTimeNano - event.timestamp
-            val durationMillis = durationNano / 1_000_000
-
-            // Log accelerometer data and duration
-            Log.d("Sensor Data", "X: $x, Y: $y, Z: $z, Duration: $durationMillis ms")
-
-            val timestamp = System.currentTimeMillis()
-
-            // Use the model to handle sensor data
-            sensorModel.formatSensorData(x, y, z, timestamp, durationMillis)
-
-            // Update UI with raw sensor data
-            updateSensorDataOnUI()
+        when (event.sensor.type) {
+            Sensor.TYPE_ACCELEROMETER -> {
+                // Handle accelerometer data
+                val x = event.values[0]
+                val y = event.values[1]
+                val z = event.values[2]
+                val timestamp = System.currentTimeMillis()
+                val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
+                sensorModel.formatSensorData("Accelerometer", x, y, z, timestamp, durationMillis)
+            }
+            Sensor.TYPE_GYROSCOPE -> {
+                // Handle gyroscope data
+                val x = event.values[0]
+                val y = event.values[1]
+                val z = event.values[2]
+                val timestamp = System.currentTimeMillis()
+                val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
+                sensorModel.formatSensorData("Gyroscope", x, y, z, timestamp, durationMillis)
+            }
+            // Add more cases for other sensors if needed
         }
+        // Update UI with raw sensor data
+        updateSensorDataOnUI()
     }
+
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Not needed for this example
@@ -117,4 +140,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorDataTextView.text = "Sensor Data:\n${sensorModel.getFormattedSensorData()}"
         Log.d("UI Update", "Sensor data updated on UI")
     }
+}
+
+@Composable
+private fun DataIngestionApp(
+
+){
+
 }
