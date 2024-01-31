@@ -34,10 +34,12 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
@@ -150,7 +152,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         when (event.sensor.type) {
-            /*Sensor.TYPE_ACCELEROMETER -> {
+            Sensor.TYPE_ACCELEROMETER -> {
                 // Handle accelerometer data
                 val x = event.values[0]
                 val y = event.values[1]
@@ -159,6 +161,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
                 sensorModel.formatSensorData("Accelerometer", x, y, z, timestamp, durationMillis)
             }
+
             Sensor.TYPE_GYROSCOPE -> {
                 // Handle gyroscope data
                 val x = event.values[0]
@@ -167,14 +170,15 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val timestamp = System.currentTimeMillis()
                 val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
                 sensorModel.formatSensorData("Gyroscope", x, y, z, timestamp, durationMillis)
-            }*/
+            }
+
             Sensor.TYPE_HEART_RATE -> {
                 // Handle heart rate data
                 val heartRate = event.values[0]
                 val timestamp = System.currentTimeMillis()
                 val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
                 sensorModel.formatSensorData(
-                    "Heart Rate",
+                    "Heart Rate (BPM)",
                     heartRate,
                     0f,
                     0f,
@@ -200,16 +204,17 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     @Composable
     fun WearOSDataIngestion(sensorDataModel: SensorDataModel) {
-        Column(
+        ScalingLazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SensorDataView(sensorData = sensorDataModel.getFormattedSensorData())
 
-            SendDataButton(onClick = { sensorDataModel.sendDataToFirebase() })
+            item { SendDataButton(onClick = { sensorDataModel.sendDataToFirebase() }) }
+            item { SensorDataView(sensorData = sensorDataModel.getFormattedSensorData()) }
+
         }
     }
 
@@ -217,7 +222,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     fun SensorDataView(sensorData: String) {
         Text(
             text = "Sensor Data:\n$sensorData",
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
+            color = Color.Black
         )
     }
 
@@ -240,6 +246,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             //Text("Send Data")
         }
     }
+
     @Preview
     @Composable
     fun AppPreview() {

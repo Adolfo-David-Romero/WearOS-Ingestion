@@ -14,6 +14,7 @@ class SensorDataModel {
     fun formatSensorData(sensorType: String, x: Float, y: Float, z: Float, timestamp: Long, duration: Long) {
         val formattedTime = formatTimestamp(timestamp)
         val formattedData = """
+       
             Sensor Type: $sensorType,
             Sensor Data: ($x, $y, $z),
             Time: $formattedTime,
@@ -61,6 +62,7 @@ class SensorDataModel {
     }
 }
 //SensorDataViewModel acts as a bridge between UI (Compose components) and the SensorDataModel.
+/*
 class SensorDataViewModel : ViewModel() {
     private val sensorDataModel = SensorDataModel()
 
@@ -75,4 +77,4 @@ class SensorDataViewModel : ViewModel() {
     fun sendDataToFirebase() {
         sensorDataModel.sendDataToFirebase()
     }
-}
+}*/

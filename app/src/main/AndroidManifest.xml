@@ -5,8 +5,16 @@
 
     <!--Heart Rate Sensor Permission-->
     <uses-permission android:name="android.permission.BODY_SENSORS"/>
+    <uses-permission android:name="android.permission.BODY_SENSORS_BACKGROUND"/>
+    <uses-feature android:name="android.hardware.sensor.heartrate" android:required="true" />
+
+
 
     <uses-feature android:name="android.hardware.type.watch" />
+
+    <queries>
+        <package android:name="com.google.android.wearable.healthservices" />
+    </queries>
 
 
     <application
