@@ -13,7 +13,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.health.connect.datatypes.ExerciseRoute
 import android.os.Bundle
-import android.widget.Button
+
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
@@ -21,7 +21,29 @@ import com.example.wearos_ingestion.R
 import com.example.wearos_ingestion.presentation.model.SensorDataModel
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Icon
+import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Text
+import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
+import com.example.wearos_ingestion.presentation.theme.WearOSIngestionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
 
@@ -31,14 +53,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
     private var heartRate: Sensor? = null
-    private lateinit var sensorDataTextView: TextView
-    private lateinit var sendDataButton: Button
+
+    /*    private lateinit var sensorDataTextView: TextView
+        private lateinit var sendDataButton: Button*/
     private lateinit var sensorModel: SensorDataModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         // Initialize the sensor manager
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -83,36 +105,46 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         // Initialize the sensor model
         sensorModel = SensorDataModel()
 
-        // Initialize UI components
-        sensorDataTextView = findViewById(R.id.sensorDataTextView)
-        sendDataButton = findViewById(R.id.sendDataButton)
-
-
-
-        // Set up button click listener
-        sendDataButton.setOnClickListener {
-            Log.d("Button Click", "Send Data button clicked")
-            // Send sensor data to Firebase and update UI
-            sensorModel.sendDataToFirebase()
-            updateSensorDataOnUI()
+        setContent {
+            WearOSDataIngestion(sensorDataModel = sensorModel)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        // Register the accelerometer sensor listener if available
+        // Register the sensors if available
         accelerometer?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
-            Log.d("Sensor Info", "Accelerometer sensor listener registered")
+            Log.d("Sensor Info", "${it.name} sensor listener registered")
+        }
+
+        gyroscope?.let {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+            Log.d("Sensor Info", "${it.name} sensor listener registered")
+        }
+
+        heartRate?.let {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+            Log.d("Sensor Info", "${it.name} sensor listener registered")
         }
     }
 
     override fun onPause() {
         super.onPause()
-        // Unregister the accelerometer sensor listener if available
+        // Unregister the sensors if available
         accelerometer?.let {
-            sensorManager.unregisterListener(this)
-            Log.d("Sensor Info", "Accelerometer sensor listener unregistered")
+            sensorManager.unregisterListener(this, it)
+            Log.d("Sensor Info", "${it.name} sensor listener unregistered")
+        }
+
+        gyroscope?.let {
+            sensorManager.unregisterListener(this, it)
+            Log.d("Sensor Info", "${it.name} sensor listener unregistered")
+        }
+
+        heartRate?.let {
+            sensorManager.unregisterListener(this, it)
+            Log.d("Sensor Info", "${it.name} sensor listener unregistered")
         }
     }
 
@@ -141,7 +173,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val heartRate = event.values[0]
                 val timestamp = System.currentTimeMillis()
                 val durationMillis = (System.nanoTime() - event.timestamp) / 1_000_000
-                sensorModel.formatSensorData("Heart Rate", heartRate, 0f, 0f, timestamp, durationMillis)
+                sensorModel.formatSensorData(
+                    "Heart Rate",
+                    heartRate,
+                    0f,
+                    0f,
+                    timestamp,
+                    durationMillis
+                )
             }
         }
         // Update UI with raw sensor data
@@ -155,14 +194,65 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     private fun updateSensorDataOnUI() {
         // Update the TextView with formatted sensor data
-        sensorDataTextView.text = "Sensor Data:\n${sensorModel.getFormattedSensorData()}"
-        Log.d("UI Update", "Sensor data updated on UI")
+        // You can replace this with a Compose UI update if needed
+        Log.d("UI Update", "Sensor data updated on UI: ${sensorModel.getFormattedSensorData()}")
     }
+
+    @Composable
+    fun WearOSDataIngestion(sensorDataModel: SensorDataModel) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SensorDataView(sensorData = sensorDataModel.getFormattedSensorData())
+
+            SendDataButton(onClick = { sensorDataModel.sendDataToFirebase() })
+        }
+    }
+
+    @Composable
+    fun SensorDataView(sensorData: String) {
+        Text(
+            text = "Sensor Data:\n$sensorData",
+            style = MaterialTheme.typography.body1
+        )
+    }
+
+    @Composable
+    fun SendDataButton(onClick: () -> Unit) {
+        val keyboardController = LocalSoftwareKeyboardController.current
+        Button(
+            onClick = {
+                onClick()
+                keyboardController?.hide()
+            },
+            modifier = Modifier
+                .padding(top = 16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Send,
+                contentDescription = "Send Data"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            //Text("Send Data")
+        }
+    }
+    @Preview
+    @Composable
+    fun AppPreview() {
+        WearOSDataIngestion(sensorDataModel = sensorModel)
+    }
+
 }
 
-@Composable
-private fun DataIngestionApp(
 
-){
 
-}
+
+
+
+
+
+

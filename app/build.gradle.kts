@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
@@ -65,6 +65,18 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.1.0")
 
     // https://firebase.google.com/docs/android/setup#available-libraries
+
+    //Compose dependencies
+    implementation("androidx.wear.compose:compose-foundation:1.3.0")
+
+    // For Wear Material Design UX guidelines and specifications
+    implementation("androidx.wear.compose:compose-material:1.3.0")
+
+    // For integration between Wear Compose and Androidx Navigation libraries
+    implementation("androidx.wear.compose:compose-navigation:1.3.0")
+
+    // For Wear preview annotations
+    implementation("androidx.wear.compose:compose-ui-tooling:1.3.0")
 
 
     val appcompat_version = "1.6.1"

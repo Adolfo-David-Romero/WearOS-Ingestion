@@ -2,6 +2,7 @@ package com.example.wearos_ingestion.presentation.model
 
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -13,12 +14,11 @@ class SensorDataModel {
     fun formatSensorData(sensorType: String, x: Float, y: Float, z: Float, timestamp: Long, duration: Long) {
         val formattedTime = formatTimestamp(timestamp)
         val formattedData = """
-            
             Sensor Type: $sensorType,
             Sensor Data: ($x, $y, $z),
             Time: $formattedTime,
             Duration: $duration ms
-        """
+        """.trimIndent()
         sensorData.append(formattedData)
 
         // Log the formatted data for debugging
@@ -58,5 +58,21 @@ class SensorDataModel {
 
         // Clear sensor data after sending to Firebase
         clearSensorData()
+    }
+}
+//SensorDataViewModel acts as a bridge between UI (Compose components) and the SensorDataModel.
+class SensorDataViewModel : ViewModel() {
+    private val sensorDataModel = SensorDataModel()
+
+    fun formatSensorData(sensorType: String, x: Float, y: Float, z: Float, timestamp: Long, duration: Long) {
+        sensorDataModel.formatSensorData(sensorType, x, y, z, timestamp, duration)
+    }
+
+    fun getFormattedSensorData(): String {
+        return sensorDataModel.getFormattedSensorData()
+    }
+
+    fun sendDataToFirebase() {
+        sensorDataModel.sendDataToFirebase()
     }
 }
