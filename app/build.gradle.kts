@@ -77,6 +77,7 @@ dependencies {
 
     // For Wear preview annotations
     implementation("androidx.wear.compose:compose-ui-tooling:1.3.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
 
     val appcompat_version = "1.6.1"
@@ -90,7 +91,8 @@ dependencies {
     implementation ("androidx.compose.foundation:foundation:1.1.0-alpha06")
     implementation ("androidx.compose.material:material:1.1.0-alpha06")
 
-
+    //Google Health Services
+    implementation("androidx.health:health-services-client:1.1.0-alpha02")
 
     implementation("com.google.android.gms:play-services-wearable:18.1.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
@@ -104,4 +106,6 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+
 }

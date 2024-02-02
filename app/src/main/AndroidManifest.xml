@@ -3,9 +3,14 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+
     <!--Heart Rate Sensor Permission-->
     <uses-permission android:name="android.permission.BODY_SENSORS"/>
+
+    <!--on Wear OS 4 (API level 33) and higher-->
     <uses-permission android:name="android.permission.BODY_SENSORS_BACKGROUND"/>
+
     <uses-feature android:name="android.hardware.sensor.heartrate" android:required="true" />
 
 
