@@ -78,6 +78,7 @@ dependencies {
     // For Wear preview annotations
     implementation("androidx.wear.compose:compose-ui-tooling:1.3.0")
     implementation("androidx.datastore:datastore-core:1.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
 
     val appcompat_version = "1.6.1"
