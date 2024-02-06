@@ -45,26 +45,36 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
+import com.example.passivedatacompose.presentation.PassiveDataApp
 import com.example.wearos_ingestion.presentation.theme.WearOSIngestionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
 
-class MainActivity : ComponentActivity(), SensorEventListener {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var sensorManager: SensorManager
+    /*    private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
     private var heartRate: Sensor? = null
 
-    /*    private lateinit var sensorDataTextView: TextView
-        private lateinit var sendDataButton: Button*/
-    private lateinit var sensorModel: SensorDataModel
+    *//*    private lateinit var sensorDataTextView: TextView
+        private lateinit var sendDataButton: Button*//*
+    private lateinit var sensorModel: SensorDataModel*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val healthServicesRepository = (application as MainApplication).healthServicesRepository
+        val passiveDataRepository = (application as MainApplication).passiveDataRepository
 
-        // Initialize the sensor manager
+        setContent {
+            PassiveDataApp(
+                healthServicesRepository = healthServicesRepository,
+                passiveDataRepository = passiveDataRepository
+            )
+        }
+
+        /*        // Initialize the sensor manager
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         // Initialize the accelerometer sensor
@@ -189,10 +199,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
         // Update UI with raw sensor data
         updateSensorDataOnUI()
-    }
+    }*/
 
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        /*    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Not needed for this example
     }
 
@@ -251,8 +261,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     @Composable
     fun AppPreview() {
         WearOSDataIngestion(sensorDataModel = sensorModel)
-    }
+    }*/
 
+
+    }
 }
 
 

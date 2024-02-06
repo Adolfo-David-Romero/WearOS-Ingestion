@@ -10,12 +10,13 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.example.wearos_ingestion.presentation.PERMISSION
 import com.example.wearos_ingestion.presentation.data.HealthServicesRepository
 import com.example.wearos_ingestion.presentation.data.PassiveDataRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-/*class StartupReceiver : BroadcastReceiver() {
+class StartupReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val repository = PassiveDataRepository(context)
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
@@ -45,8 +46,8 @@ import kotlinx.coroutines.runBlocking
             OneTimeWorkRequestBuilder<RegisterForBackgroundDataWorker>().build()
         )
     }
-}*/
-/*
+}
+
 class RegisterForBackgroundDataWorker(private val appContext: Context, workerParams: WorkerParameters) :
     CoroutineWorker(appContext, workerParams) {
 
@@ -56,4 +57,4 @@ class RegisterForBackgroundDataWorker(private val appContext: Context, workerPar
         healthServicesRepository.registerForHeartRateData()
         return Result.success()
     }
-}*/
+}

@@ -6,10 +6,9 @@ import android.util.Log
 import androidx.health.services.client.HealthServices
 import androidx.health.services.client.data.DataType
 import androidx.health.services.client.data.PassiveListenerConfig
-import androidx.work.await
+import androidx.concurrent.futures.await
 import com.example.wearos_ingestion.presentation.service.PassiveDataService
 
-//import androidx.concurrent.futures.await
 
 class HealthServicesRepository(context: Context) {
     private val healthServicesClient = HealthServices.getClient(context)

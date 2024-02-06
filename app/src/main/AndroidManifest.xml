@@ -17,9 +17,6 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <queries>
-        <package android:name="com.google.android.wearable.healthservices" />
-    </queries>
 
 
     <application
@@ -51,6 +48,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".presentation.service.PassiveDataService"
+            android:exported="true"
+            android:permission="com.google.android.wearable.healthservices.permission.PASSIVE_DATA_BINDING" />
+
+        <!-- Receiver that re-registers for background data after a device restart. -->
+        <receiver
+            android:name=".presentation.service.StartupReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
+
+    <queries>
+        <package android:name="com.google.android.wearable.healthservices" />
+    </queries>
 
 </manifest>

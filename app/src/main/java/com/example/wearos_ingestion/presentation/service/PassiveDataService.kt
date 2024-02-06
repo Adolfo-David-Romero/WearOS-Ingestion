@@ -8,7 +8,7 @@ import com.example.wearos_ingestion.presentation.data.latestHeartRate
 import kotlinx.coroutines.runBlocking
 
 class PassiveDataService : PassiveListenerService()  {
-/*    private val repository = PassiveDataRepository(this)
+    private val repository = PassiveDataRepository(this)
 
     override fun onNewDataPointsReceived(dataPoints: DataPointContainer) {
         runBlocking {
@@ -16,5 +16,5 @@ class PassiveDataService : PassiveListenerService()  {
                 repository.storeLatestHeartRate(it)
             }
         }
-    }*/
+    }
 }
