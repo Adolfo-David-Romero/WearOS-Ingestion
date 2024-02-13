@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.data
+package com.example.wearos_ingestion.presentation.data.repository
 
 import androidx.health.services.client.data.DataType
 import androidx.health.services.client.data.HeartRateAccuracy

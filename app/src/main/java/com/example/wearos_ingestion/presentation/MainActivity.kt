@@ -6,27 +6,19 @@
 
 package com.example.wearos_ingestion.presentation
 
-import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.health.connect.datatypes.ExerciseRoute
 import android.os.Bundle
 
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
-import com.example.wearos_ingestion.R
-import com.example.wearos_ingestion.presentation.model.SensorDataModel
+import com.example.wearos_ingestion.presentation.data.model.SensorDataModel
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -36,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
@@ -44,27 +35,38 @@ import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
-import com.example.wearos_ingestion.presentation.theme.WearOSIngestionTheme
-import com.google.android.gms.location.FusedLocationProviderClient
+import com.example.wearos_ingestion.presentation.presentation.IngestionApp
+import com.example.wearos_ingestion.presentation.presentation.SendDataButton
+import com.example.wearos_ingestion.presentation.presentation.SensorDataView
+import com.example.wearos_ingestion.presentation.service.FirebaseHandler
 
 
-class MainActivity : ComponentActivity(), SensorEventListener {
-
+class MainActivity : ComponentActivity() {
+/*
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
     private var heartRate: Sensor? = null
 
-    /*    private lateinit var sensorDataTextView: TextView
-        private lateinit var sendDataButton: Button*/
-    private lateinit var sensorModel: SensorDataModel
+    *//*    private lateinit var sensorDataTextView: TextView
+        private lateinit var sendDataButton: Button*//*
+    private lateinit var sensorModel: SensorDataModel*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize the sensor manager
+        val healthServicesRepository = (application as MainApplication).healthServicesRepository
+        val passiveDataRepository = (application as MainApplication).passiveDataRepository
+
+        setContent {
+            IngestionApp(
+                healthServicesRepository = healthServicesRepository,
+                passiveDataRepository = passiveDataRepository
+            )
+        }
+
+/*        // Initialize the sensor manager
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         // Initialize the accelerometer sensor
@@ -109,10 +111,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         setContent {
             WearOSDataIngestion(sensorDataModel = sensorModel)
-        }
+        }*/
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         // Register the sensors if available
         accelerometer?.let {
@@ -204,54 +206,15 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     @Composable
     fun WearOSDataIngestion(sensorDataModel: SensorDataModel) {
-        ScalingLazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            item { SendDataButton(onClick = { sensorDataModel.sendDataToFirebase() }) }
-            item { SensorDataView(sensorData = sensorDataModel.getFormattedSensorData()) }
-
+        SensorDataView(sensorData = sensorDataModel.getFormattedSensorData())
+        SendDataButton(sensorData = sensorDataModel.getFormattedSensorData())
+        {
+            FirebaseHandler().sendDataToFirebase(sensorData = sensorDataModel.getFormattedSensorData())
         }
-    }
 
-    @Composable
-    fun SensorDataView(sensorData: String) {
-        Text(
-            text = "Sensor Data:\n$sensorData",
-            style = MaterialTheme.typography.body1,
-            color = Color.Black
-        )
-    }
 
-    @Composable
-    fun SendDataButton(onClick: () -> Unit) {
-        val keyboardController = LocalSoftwareKeyboardController.current
-        Button(
-            onClick = {
-                onClick()
-                keyboardController?.hide()
-            },
-            modifier = Modifier
-                .padding(top = 16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Send,
-                contentDescription = "Send Data"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            //Text("Send Data")
-        }
-    }
+    }*/
 
-    @Preview
-    @Composable
-    fun AppPreview() {
-        WearOSDataIngestion(sensorDataModel = sensorModel)
-    }
 
 }
 

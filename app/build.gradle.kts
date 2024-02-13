@@ -52,6 +52,19 @@ android {
 }
 
 dependencies {
+    //--
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.1.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    // optional - RxJava2 support
+    implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0@aar")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    //--
+
+    //implementation ("com.microsoft.azure:azure-hsqldb:1.0.0")
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))

@@ -1,14 +1,18 @@
-package com.example.wearos_ingestion.presentation.data
+package com.example.wearos_ingestion.presentation.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.prefs.Preferences
 
-//private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "passive_data")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "passive_data")
 class PassiveDataRepository(private val context: Context) {
-/*    val passiveDataEnabled: Flow<Boolean> = context.dataStore.data.map { prefs ->
+    val passiveDataEnabled: Flow<Boolean> = context.dataStore.data.map { prefs ->
         prefs[PASSIVE_DATA_ENABLED] ?: false
     }
 
@@ -31,5 +35,5 @@ class PassiveDataRepository(private val context: Context) {
     companion object {
         private val PASSIVE_DATA_ENABLED = booleanPreferencesKey("passive_data_enabled")
         private val LATEST_HEART_RATE = doublePreferencesKey("latest_heart_rate")
-    }*/
+    }
 }
