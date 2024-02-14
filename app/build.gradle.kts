@@ -91,6 +91,7 @@ dependencies {
     // For Wear preview annotations
     implementation("androidx.wear.compose:compose-ui-tooling:1.3.0")
     implementation("androidx.datastore:datastore-core:1.0.0")
+    implementation("com.google.android.gms:play-services-fitness:21.1.0")
 
 
     val appcompat_version = "1.6.1"
