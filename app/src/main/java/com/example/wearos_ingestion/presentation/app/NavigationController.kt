@@ -10,6 +10,7 @@ import com.example.wearos_ingestion.presentation.presentation.ingestion.Ingestio
 import com.example.wearos_ingestion.presentation.presentation.ingestion.SensorDataNavigationButton
 import com.example.wearos_ingestion.presentation.presentation.sensors.SensorDataScreen
 
+/*
 @Composable
 fun NavigationController(
     healthServicesRepository: HealthServicesRepository,
@@ -26,4 +27,4 @@ fun NavigationController(
         }
     }
 
-}
+}*/

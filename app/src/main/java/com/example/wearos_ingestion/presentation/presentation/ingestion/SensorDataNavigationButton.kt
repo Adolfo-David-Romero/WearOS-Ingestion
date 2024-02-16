@@ -11,11 +11,14 @@ import androidx.navigation.NavController
 @Composable
 fun SensorDataNavigationButton(navController: NavController) {
     Button(
-        onClick = { navController.navigate("sensor_data_screen") },
+        onClick = {
+            navController.navigate("sensorDataScreen")
+        },
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxWidth()
+            .padding(vertical = 4.dp)
     ) {
-        Text(text = "Navigate")
+        Text("Go to Sensor Data Screen")
     }
+
 }

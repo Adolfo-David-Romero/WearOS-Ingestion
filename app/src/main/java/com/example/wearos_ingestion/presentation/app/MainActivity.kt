@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable("sensorDataScreen") {
-                    SensorDataScreen()
+                    SensorDataScreen(navController=navController)
                 }
             }
         }

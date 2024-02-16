@@ -57,7 +57,7 @@ fun IngestionAppScreen(
 
         /*val navController = rememberNavController() // Create a NavController instance
         SensorDataNavigationButton(navController = navController)*/
-        Button(
+        /*Button(
             onClick = {
                 navController.navigate("sensorDataScreen")
             },
@@ -66,7 +66,8 @@ fun IngestionAppScreen(
                 .padding(vertical = 4.dp)
         ) {
             Text("Go to Sensor Data Screen")
-        }
+        }*/
+        SensorDataNavigationButton(navController = navController)
 
     }
 }
