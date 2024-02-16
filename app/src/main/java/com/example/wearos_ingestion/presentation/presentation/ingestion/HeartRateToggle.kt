@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.ingestion
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +10,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.ToggleChip
 import androidx.wear.compose.material.ToggleChipDefaults
 import com.example.wearos_ingestion.R
-import com.example.wearos_ingestion.presentation.PERMISSION
+import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState

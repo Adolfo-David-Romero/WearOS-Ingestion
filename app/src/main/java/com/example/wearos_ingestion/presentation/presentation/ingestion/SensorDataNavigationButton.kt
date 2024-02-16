@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.ingestion
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -16,6 +16,6 @@ fun SensorDataNavigationButton(navController: NavController) {
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        Text(text = "View Sensor Data")
+        Text(text = "Navigate")
     }
 }

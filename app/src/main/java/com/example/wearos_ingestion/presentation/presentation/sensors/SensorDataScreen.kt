@@ -1,9 +1,10 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.sensors
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,23 +16,13 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
-
 @Composable
 fun SensorDataScreen(
-    healthServicesRepository: HealthServicesRepository,
-    passiveDataRepository: PassiveDataRepository
 ) {
-    val viewModel: IngestionViewModel = viewModel(
-        factory = IngestionViewModelFactory(
-            healthServicesRepository = healthServicesRepository,
-            passiveDataRepository = passiveDataRepository
-        )
-    )
-    val hrValue by viewModel.hrValue.collectAsState()
 
     Column {
-        val hrText = hrValue.roundToInt().toString()
-        Text(hrText)
+        //val hrText = hrValue.roundToInt().toString()
+        Text("hrText")
 
     }
 }

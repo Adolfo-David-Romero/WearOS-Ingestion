@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.sensors
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding

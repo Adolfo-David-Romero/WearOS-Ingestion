@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation
+package com.example.wearos_ingestion.presentation.app
 
 import android.app.Application
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository

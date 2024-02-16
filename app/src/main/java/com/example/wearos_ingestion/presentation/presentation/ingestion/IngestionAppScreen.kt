@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.ingestion
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.wearos_ingestion.presentation.PERMISSION
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Text
+import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -27,7 +29,7 @@ fun IngestionAppScreen(
     hrEnabled: Boolean,
     onEnableClick: (Boolean) -> Unit,
     permissionState: PermissionState,
-    navController: NavController // Pass the NavController to the screen composable
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier
@@ -53,11 +55,18 @@ fun IngestionAppScreen(
         // Spacer to push the button to the bottom
         Spacer(modifier = Modifier.weight(1f))
 
-        // SensorDataNavigationButton at the bottom
-        SensorDataNavigationButton(
-            navController = navController
-        )
-
+        /*val navController = rememberNavController() // Create a NavController instance
+        SensorDataNavigationButton(navController = navController)*/
+        Button(
+            onClick = {
+                navController.navigate("sensorDataScreen")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
+        ) {
+            Text("Go to Sensor Data Screen")
+        }
 
     }
 }
@@ -82,7 +91,7 @@ fun PassiveDataScreenPreview() {
             hrEnabled = true,
             onEnableClick = {},
             permissionState = permissionState,
-            navController = navController
+            navController =  navController
         )
     }
 }

@@ -10,7 +10,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.example.wearos_ingestion.presentation.PERMISSION
+import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
 import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
 import kotlinx.coroutines.flow.first

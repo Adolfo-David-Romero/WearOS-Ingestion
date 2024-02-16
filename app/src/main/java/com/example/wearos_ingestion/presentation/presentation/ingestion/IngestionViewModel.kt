@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation
+package com.example.wearos_ingestion.presentation.presentation.ingestion
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
