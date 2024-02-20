@@ -22,6 +22,8 @@ class IngestionViewModel(
     val hrValue = passiveDataRepository.latestHeartRate
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)
 
+    val hrMeasured: MutableState<Double> = mutableStateOf(0.0)
+
     val hrEnabled = passiveDataRepository.passiveDataEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
