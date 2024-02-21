@@ -55,18 +55,6 @@ fun IngestionAppScreen(
         // Spacer to push the button to the bottom
         Spacer(modifier = Modifier.weight(1f))
 
-        /*val navController = rememberNavController() // Create a NavController instance
-        SensorDataNavigationButton(navController = navController)*/
-        /*Button(
-            onClick = {
-                navController.navigate("sensorDataScreen")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp)
-        ) {
-            Text("Go to Sensor Data Screen")
-        }*/
         SensorDataNavigationButton(navController = navController)
 
     }

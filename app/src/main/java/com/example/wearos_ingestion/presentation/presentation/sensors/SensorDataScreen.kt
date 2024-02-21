@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.health.services.client.HealthServices
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -22,8 +23,11 @@ import com.example.wearos_ingestion.presentation.data.repository.HealthServicesR
 import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
 import com.example.wearos_ingestion.presentation.presentation.ingestion.IngestionViewModel
 import com.example.wearos_ingestion.presentation.presentation.ingestion.IngestionViewModelFactory
+import com.example.wearos_ingestion.presentation.data.model.SensorDataModel
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.android.gms.fitness.data.HealthDataTypes
+import com.google.android.gms.fitness.data.HealthFields
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -36,6 +40,7 @@ fun SensorDataScreen(
     passiveDataRepository: PassiveDataRepository,
     navController: NavHostController
 ) {
+    //val sensorDataModel = remember { SensorDataModel() } // Remember the SensorDataModel instance
     IngestionAppTheme {
         Column {
 
@@ -46,12 +51,26 @@ fun SensorDataScreen(
                 )
             )
             val hrValue by viewModel.hrValue.collectAsState()
+
+
             BackNavigationButton(navController = navController)
             Log.d(TAG, "current hr: $hrValue")
             Text("$hrValue", color = androidx.compose.ui.graphics.Color.Red)
 
-            val thing by viewModel.hrValue.collectAsState()
-            Log.d(TAG, "current hr: $hrValue")
+            // In SensorDataScreen
+
+            val elevationValue by viewModel.elevationValue.collectAsState()
+
+            Text(
+                text = "Elevation: $elevationValue meters",
+                color = androidx.compose.ui.graphics.Color.Blue,
+                modifier = Modifier.padding(8.dp)
+            )
+
+
+
+
+
 
         }
     }

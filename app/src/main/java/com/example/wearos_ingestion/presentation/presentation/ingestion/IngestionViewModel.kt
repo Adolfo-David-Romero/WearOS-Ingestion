@@ -1,5 +1,6 @@
 package com.example.wearos_ingestion.presentation.presentation.ingestion
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
 import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
+import com.example.wearos_ingestion.presentation.presentation.sensors.TAG
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
@@ -22,10 +24,13 @@ class IngestionViewModel(
     val hrValue = passiveDataRepository.latestHeartRate
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)
 
-    val hrMeasured: MutableState<Double> = mutableStateOf(0.0)
+    val elevationValue = passiveDataRepository.latestElevation
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)
+
 
     val hrEnabled = passiveDataRepository.passiveDataEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
 
     val uiState: MutableState<UiState> = mutableStateOf(UiState.Startup)
 
@@ -48,6 +53,14 @@ class IngestionViewModel(
                 }
             }
         }
+        // Check for elevation capability and register for data
+        viewModelScope.launch {
+            if (healthServicesRepository.hasElevationCapability()) {
+                healthServicesRepository.registerForElevationData()
+            } else {
+                Log.i(TAG, "Elevation data not supported on this device")
+            }
+        }
     }
 
     fun toggleEnabled() {
@@ -60,6 +73,7 @@ class IngestionViewModel(
             }
         }
     }
+
 }
 
 class IngestionViewModelFactory(

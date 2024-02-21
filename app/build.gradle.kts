@@ -105,8 +105,11 @@ dependencies {
     implementation ("androidx.compose.foundation:foundation:1.1.0-alpha06")
     implementation ("androidx.compose.material:material:1.1.0-alpha06")
 
-    //Google Health Services
+    // Health Services
     implementation("androidx.health:health-services-client:1.1.0-alpha02")
+    implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+    implementation("androidx.annotation:annotation:1.7.1")
 
     implementation("com.google.android.gms:play-services-wearable:18.1.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
