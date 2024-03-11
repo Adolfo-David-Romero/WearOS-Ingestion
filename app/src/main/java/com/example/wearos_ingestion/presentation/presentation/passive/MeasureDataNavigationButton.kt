@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.ingestion
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -9,10 +9,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun SensorDataNavigationButton(navController: NavController) {
+fun MeasureDataNavigationButton(navController: NavController) {
     Button(
         onClick = {
-            navController.navigate("sensorDataScreen")
+            navController.navigate("measureDataApp")
         },
         modifier = Modifier
             .fillMaxWidth()

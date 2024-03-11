@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.ingestion
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.Text
 import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -24,7 +22,7 @@ import com.google.accompanist.permissions.PermissionStatus
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun IngestionAppScreen(
+fun PassiveAppScreen(
     hrValue: Double,
     hrEnabled: Boolean,
     onEnableClick: (Boolean) -> Unit,
@@ -55,7 +53,7 @@ fun IngestionAppScreen(
         // Spacer to push the button to the bottom
         Spacer(modifier = Modifier.weight(1f))
 
-        SensorDataNavigationButton(navController = navController)
+        MeasureDataNavigationButton(navController = navController)
 
     }
 }
@@ -75,7 +73,7 @@ fun PassiveDataScreenPreview() {
     }
     val navController = rememberNavController() // Create a NavController instance
     IngestionAppTheme {
-        IngestionAppScreen(
+        PassiveAppScreen(
             hrValue = 65.6,
             hrEnabled = true,
             onEnableClick = {},

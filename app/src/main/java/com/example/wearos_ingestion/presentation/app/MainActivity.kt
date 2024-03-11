@@ -6,19 +6,15 @@
 
 package com.example.wearos_ingestion.presentation.app
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.wearos_ingestion.presentation.presentation.ingestion.IngestionApp
-import com.example.wearos_ingestion.presentation.presentation.sensors.SensorDataScreen
+import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
+import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 
 
 class MainActivity : ComponentActivity() {
@@ -31,16 +27,19 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "ingestionApp") {
-                composable("ingestionApp") {
-                    IngestionApp(
+            NavHost(navController = navController, startDestination = "passiveDataApp") {
+                composable("passiveDataApp") {
+                    PassiveDataApp(
                         healthServicesRepository = healthServicesRepository,
                         passiveDataRepository = passiveDataRepository,
                         navController = navController
                     )
                 }
-                composable("sensorDataScreen") {
-                    SensorDataScreen(healthServicesRepository, passiveDataRepository, navController)
+                composable("measureDataApp") {
+                    //MeasuereDataScreen(healthServicesRepository, passiveDataRepository, navController)
+                    MeasureDataApp(
+                        healthServicesRepository = healthServicesRepository,
+                        navController = navController)
                 }
             }
         }

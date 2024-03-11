@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.ingestion
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -6,9 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.TimeText
 import com.example.wearos_ingestion.presentation.app.PERMISSION
@@ -20,7 +18,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun IngestionApp(
+fun PassiveDataApp(
     healthServicesRepository: HealthServicesRepository,
     passiveDataRepository: PassiveDataRepository,
     navController: NavHostController
@@ -31,7 +29,7 @@ fun IngestionApp(
             modifier = Modifier.fillMaxSize(),
             timeText = { TimeText() }
         ) {
-            val viewModel: IngestionViewModel = viewModel(
+            val viewModel: PassiveViewModel = viewModel(
                 factory = IngestionViewModelFactory(
                     healthServicesRepository = healthServicesRepository,
                     passiveDataRepository = passiveDataRepository
@@ -48,7 +46,7 @@ fun IngestionApp(
                         if (granted) viewModel.toggleEnabled()
                     }
                 )
-                IngestionAppScreen(
+                PassiveAppScreen(
                     hrValue = hrValue,
                     hrEnabled = hrEnabled,
                     onEnableClick = { viewModel.toggleEnabled() },

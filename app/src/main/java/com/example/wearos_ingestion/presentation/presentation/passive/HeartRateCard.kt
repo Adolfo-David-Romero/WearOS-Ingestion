@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.ingestion
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

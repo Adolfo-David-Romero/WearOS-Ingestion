@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.ingestion
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -8,13 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
 import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
-import com.example.wearos_ingestion.presentation.presentation.sensors.TAG
+import com.example.wearos_ingestion.presentation.presentation.measure.TAG
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class IngestionViewModel(
+class PassiveViewModel(
     private val healthServicesRepository: HealthServicesRepository,
     private val passiveDataRepository: PassiveDataRepository
 ) : ViewModel() {
@@ -81,9 +81,9 @@ class IngestionViewModelFactory(
     private val passiveDataRepository: PassiveDataRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(IngestionViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(PassiveViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return IngestionViewModel(
+            return PassiveViewModel(
                 healthServicesRepository = healthServicesRepository,
                 passiveDataRepository = passiveDataRepository
             ) as T

@@ -11,4 +11,11 @@
 
     <string name="heart_description">Heart</string>
     <string name="broken_heart_description">Broken heart</string>
+
+    <!--Measure Client related Strings-->
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="icon">Icon</string>
+
+    <string name="no_hr_reading">--</string>
 </resources>
