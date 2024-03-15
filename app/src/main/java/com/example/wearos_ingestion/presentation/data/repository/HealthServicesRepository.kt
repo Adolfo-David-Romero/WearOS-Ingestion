@@ -13,6 +13,8 @@ import androidx.health.services.client.data.DataTypeAvailability
 import androidx.health.services.client.data.DeltaDataType
 import androidx.health.services.client.data.SampleDataPoint
 import androidx.concurrent.futures.await
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 import com.example.wearos_ingestion.presentation.service.PassiveDataService
 import kotlinx.coroutines.channels.awaitClose
@@ -84,6 +86,7 @@ class HealthServicesRepository(context: Context) {
         return (DataType.HEART_RATE_BPM in capabilities.supportedDataTypesMeasure)
     }
 
+
     fun heartRateMeasureFlow() = callbackFlow {
         val callback = object : MeasureCallback {
             override fun onAvailabilityChanged(
@@ -113,7 +116,6 @@ class HealthServicesRepository(context: Context) {
             }
         }
     }
-
 
 
 }
