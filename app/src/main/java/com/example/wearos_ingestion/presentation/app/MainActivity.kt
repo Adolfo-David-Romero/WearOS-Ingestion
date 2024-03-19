@@ -13,6 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 
@@ -36,6 +37,12 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable("measureDataApp") {
+                    //MeasuereDataScreen(healthServicesRepository, passiveDataRepository, navController)
+                    MeasureDataApp(
+                        healthServicesRepository = healthServicesRepository,
+                        navController = navController)
+                }
+                composable("userActivityRecognitionScreen") {
                     //MeasuereDataScreen(healthServicesRepository, passiveDataRepository, navController)
                     MeasureDataApp(
                         healthServicesRepository = healthServicesRepository,

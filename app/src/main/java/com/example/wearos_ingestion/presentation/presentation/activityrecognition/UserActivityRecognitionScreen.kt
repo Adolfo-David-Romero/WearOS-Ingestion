@@ -1,4 +1,3 @@
-/*
 package com.example.wearos_ingestion.presentation.presentation.activityrecognition
 
 import android.annotation.SuppressLint
@@ -29,18 +28,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.platform.base.PermissionBox
-import com.example.platform.location.utils.CUSTOM_INTENT_USER_ACTION
-import com.google.android.catalog.framework.annotations.Sample
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.wearos_ingestion.presentation.app.PERMISSION
+import com.example.wearos_ingestion.presentation.presentation.passive.PassiveAppScreen
+import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
 
+
+const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
 @SuppressLint("MissingPermission")
-@Sample(
+/*@Sample(
     name = "Location - User Activity Recognition",
     description = "This Sample demonstrate detection of user activity like walking, driving, etc.",
     documentation = "https://developer.android.com/training/location/transitions",
-)
+)*/
 @Composable
 fun UserActivityRecognitionScreen() {
     val activityPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -119,4 +124,5 @@ fun UserActivityRecognitionContent() {
             )
         }
     }
-}*/
+}
+

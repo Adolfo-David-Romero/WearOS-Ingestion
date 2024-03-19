@@ -1,6 +1,7 @@
 package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,6 +47,7 @@ fun PassiveDataApp(
                         if (granted) viewModel.toggleEnabled()
                     }
                 )
+
                 PassiveAppScreen(
                     hrValue = hrValue,
                     hrEnabled = hrEnabled,
@@ -53,6 +55,8 @@ fun PassiveDataApp(
                     permissionState = permissionState,
                     navController = navController
                 )
+
+
             } else if (uiState == UiState.NotSupported) {
                 NotSupportedScreen()
             }

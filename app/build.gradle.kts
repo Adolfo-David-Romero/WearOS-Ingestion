@@ -77,6 +77,9 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.android.gms:play-services-location:21.1.0")
 
+    implementation ("com.google.accompanist:accompanist-pager:0.20.0")
+
+
     // https://firebase.google.com/docs/android/setup#available-libraries
 
     //Compose dependencies
@@ -92,6 +95,7 @@ dependencies {
     implementation("androidx.wear.compose:compose-ui-tooling:1.3.0")
     implementation("androidx.datastore:datastore-core:1.0.0")
     implementation("com.google.android.gms:play-services-fitness:21.1.0")
+    implementation("androidx.compose.material3:material3-android:1.2.1")
 
 
     val appcompat_version = "1.6.1"

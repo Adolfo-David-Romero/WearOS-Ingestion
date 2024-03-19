@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -29,31 +32,35 @@ fun PassiveAppScreen(
     permissionState: PermissionState,
     navController: NavHostController
 ) {
-    Column(
+    ScalingLazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
+
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        HeartRateToggle(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            checked = hrEnabled,
-            onCheckedChange = onEnableClick,
-            permissionState = permissionState
-        )
-        HeartRateCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            heartRate = hrValue
-        )
-        // Spacer to push the button to the bottom
-        Spacer(modifier = Modifier.weight(1f))
-
-        MeasureDataNavigationButton(navController = navController)
+        item {
+            HeartRateToggle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                checked = hrEnabled,
+                onCheckedChange = onEnableClick,
+                permissionState = permissionState
+            )
+        }
+        item {
+            HeartRateCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                heartRate = hrValue
+            )
+        }
+        item {
+            MeasureDataNavigationButton(navController = navController)
+        }
 
     }
 }
@@ -78,7 +85,7 @@ fun PassiveDataScreenPreview() {
             hrEnabled = true,
             onEnableClick = {},
             permissionState = permissionState,
-            navController =  navController
+            navController = navController
         )
     }
 }
