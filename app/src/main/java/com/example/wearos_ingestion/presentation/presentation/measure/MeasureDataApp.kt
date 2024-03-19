@@ -51,7 +51,7 @@ fun MeasureDataApp(
                     permissionState = permissionState,
                     navController = navController
                 )
-                BackNavigationButton(navController = navController)
+
             } else if (uiState == UiState.NotSupported) {
                 NotSupportedScreen()
             }

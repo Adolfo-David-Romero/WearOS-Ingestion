@@ -1,2 +1,0 @@
-package com.example.wearos_ingestion.presentation.presentation.activityrecognition
-

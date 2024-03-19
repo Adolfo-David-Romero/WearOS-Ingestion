@@ -40,6 +40,9 @@ fun PassiveAppScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        item{
+            ActivityRecognitionNavigationButton(navController = navController)
+        }
         item {
             HeartRateToggle(
                 modifier = Modifier

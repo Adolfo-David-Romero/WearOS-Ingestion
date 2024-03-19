@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.app.PERMISSION
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveAppScreen
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
@@ -40,6 +41,7 @@ import com.google.accompanist.permissions.PermissionStatus
 
 
 const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
+
 @SuppressLint("MissingPermission")
 /*@Sample(
     name = "Location - User Activity Recognition",
@@ -91,37 +93,64 @@ fun UserActivityRecognitionContent() {
         currentUserActivity = userActivity
     }
 
-    Column(
+    ScalingLazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Button(
-            onClick = {
-                scope.launch(Dispatchers.IO) {
-                    manager.registerActivityTransitions()
-                }
+        item {
+            Button(
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        manager.registerActivityTransitions()
+                    }
 
-            },
-        ) {
-            Text(text = "Register for activity transition updates")
-        }
-        Button(
-            onClick = {
-                currentUserActivity = ""
-                scope.launch(Dispatchers.IO) {
-                    manager.deregisterActivityTransitions()
-                }
-            },
-        ) {
-            Text(text = "Deregister for activity transition updates")
-        }
-        if (currentUserActivity.isNotBlank()) {
-            Text(
-                text = "CurrentActivity is = $currentUserActivity",
+                },
             )
+            {
+                Text(text = "Register for activity transition updates")
+            }
+        }
+        item {
+            Button(
+                onClick = {
+                    currentUserActivity = ""
+                    scope.launch(Dispatchers.IO) {
+                        manager.deregisterActivityTransitions()
+                    }
+                },
+            ) {
+                Text(text = "Deregister for activity transition updates")
+            }
+            if (currentUserActivity.isNotBlank()) {
+                Text(
+                    text = "CurrentActivity is = $currentUserActivity",
+                )
+            }
+        }
+    }
+}
+
+@ExperimentalPermissionsApi
+@Preview(
+    device = Devices.WEAR_OS_SMALL_ROUND,
+    showBackground = false,
+    showSystemUi = true
+)
+@Composable
+fun UserActivityRecognitionScreenPreview() {
+    val context = LocalContext.current // Mock implementation of LocalContext
+    val lifecycleOwner = LocalLifecycleOwner.current // Mock implementation of LocalLifecycleOwner
+
+    // Provide mock values for CompositionLocals
+    CompositionLocalProvider(
+        LocalContext provides context,
+        LocalLifecycleOwner provides lifecycleOwner
+    ) {
+        IngestionAppTheme {
+            UserActivityRecognitionContent()
         }
     }
 }

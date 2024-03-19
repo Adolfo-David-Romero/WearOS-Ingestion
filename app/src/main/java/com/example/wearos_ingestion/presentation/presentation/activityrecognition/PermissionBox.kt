@@ -1,6 +1,8 @@
 package com.example.wearos_ingestion.presentation.presentation.activityrecognition
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -27,9 +29,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.wearos_ingestion.presentation.app.PERMISSION
+import com.example.wearos_ingestion.presentation.presentation.passive.PassiveAppScreen
+import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
@@ -222,3 +232,23 @@ private fun PermissionScreen(
         )
     }
 }
+/*@OptIn(ExperimentalPermissionsApi::class)
+@Preview(
+    device = Devices.WEAR_OS_SMALL_ROUND,
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun PermissionScreenPreview() {
+    val state = rememberMultiplePermissionsState(listOf(Manifest.permission.ACCESS_FINE_LOCATION))
+    val description = "This sample requires access to location." // Replace with your desired description
+    val errorText = "Permission required for the sample." // Replace with your desired error text
+
+    IngestionAppTheme {
+        PermissionScreen(
+            state = state,
+            description = description,
+            errorText = errorText
+        )
+    }
+}*/

@@ -15,6 +15,7 @@ import androidx.health.services.client.data.MeasureCapabilities
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.Button
 import com.example.wearos_ingestion.R
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
@@ -72,31 +73,38 @@ fun MeasureDataScreen(
     permissionState: PermissionState,
     navController: NavHostController
 ) {
-    Column(
+    ScalingLazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        HrLabel(
-            hr = hr,
-            availability = availability
-        )
-        Button(
-            modifier = Modifier.fillMaxWidth(0.5f),
-            onClick = {
-                if (permissionState.status.isGranted) {
-                    onButtonClick()
-                } else {
-                    permissionState.launchPermissionRequest()
+        item {
+            BackNavigationButton(navController = navController)
+        }
+        item {
+            HrLabel(
+                hr = hr,
+                availability = availability
+            )
+        }
+        item {
+            Button(
+                modifier = Modifier.fillMaxWidth(0.5f),
+                onClick = {
+                    if (permissionState.status.isGranted) {
+                        onButtonClick()
+                    } else {
+                        permissionState.launchPermissionRequest()
+                    }
                 }
+            ) {
+                val buttonTextId = if (enabled) {
+                    R.string.stop
+                } else {
+                    R.string.start
+                }
+                androidx.wear.compose.material.Text(stringResource(buttonTextId))
             }
-        ) {
-            val buttonTextId = if (enabled) {
-                R.string.stop
-            } else {
-                R.string.start
-            }
-            androidx.wear.compose.material.Text(stringResource(buttonTextId))
         }
     }
 }
