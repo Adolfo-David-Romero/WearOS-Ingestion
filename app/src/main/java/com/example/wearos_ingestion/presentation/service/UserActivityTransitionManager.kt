@@ -6,7 +6,10 @@ import android.app.PendingIntent
 import android.os.Build
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.RequiresPermission
+import com.example.wearos_ingestion.presentation.app.CUSTOM_INTENT_USER_ACTION
+import com.example.wearos_ingestion.presentation.app.CUSTOM_REQUEST_CODE_USER_ACTION
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionRequest
@@ -103,6 +106,7 @@ class UserActivityTransitionManager(context: Context) {
                 activityTransitions
             ), pendingIntent
         ).await()
+        Log.d("UserActivityTransition", "Activity transitions registered")
     }
 
     @SuppressLint("InlinedApi")
@@ -114,5 +118,6 @@ class UserActivityTransitionManager(context: Context) {
     )
     suspend fun deregisterActivityTransitions() = kotlin.runCatching {
         activityClient.removeActivityUpdates(pendingIntent).await()
+        Log.d("UserActivityTransition", "Activity transitions deregistered")
     }
 }

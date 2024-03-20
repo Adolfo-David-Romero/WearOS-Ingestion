@@ -75,7 +75,7 @@ dependencies {
 
     // Add the dependencies for any other desired Firebase products
     implementation("com.google.firebase:firebase-database")
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     implementation ("com.google.accompanist:accompanist-pager:0.20.0")
 

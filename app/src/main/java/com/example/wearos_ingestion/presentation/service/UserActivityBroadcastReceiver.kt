@@ -37,8 +37,10 @@ fun UserActivityBroadcastReceiver(
             }
         }
         context.registerReceiver(broadcast, intentFilter)
+        Log.d("UserActivityReceiver", "BroadcastReceiver registered")
         onDispose {
             context.unregisterReceiver(broadcast)
+            Log.d("UserActivityReceiver", "BroadcastReceiver unregistered")
         }
     }
 }

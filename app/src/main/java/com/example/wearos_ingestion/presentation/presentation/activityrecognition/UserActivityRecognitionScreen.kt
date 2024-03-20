@@ -3,7 +3,6 @@ package com.example.wearos_ingestion.presentation.presentation.activityrecogniti
 import android.annotation.SuppressLint
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +14,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Text
-import com.example.wearos_ingestion.presentation.service.CUSTOM_INTENT_USER_ACTION
+import com.example.wearos_ingestion.presentation.app.CUSTOM_INTENT_USER_ACTION
 import com.example.wearos_ingestion.presentation.service.UserActivityBroadcastReceiver
 import com.example.wearos_ingestion.presentation.service.UserActivityTransitionManager
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +22,7 @@ import kotlinx.coroutines.launch
 
 import android.Manifest
 import android.os.Build
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,14 +30,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import com.example.wearos_ingestion.presentation.app.PERMISSION
-import com.example.wearos_ingestion.presentation.presentation.passive.PassiveAppScreen
+import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.PermissionStatus
 
 
 const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
@@ -49,7 +47,9 @@ const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
     documentation = "https://developer.android.com/training/location/transitions",
 )*/
 @Composable
-fun UserActivityRecognitionScreen() {
+fun UserActivityRecognitionScreen(
+    navController: NavHostController
+) {
     val activityPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         Manifest.permission.ACTIVITY_RECOGNITION
     } else {
@@ -57,7 +57,7 @@ fun UserActivityRecognitionScreen() {
     }
 
     PermissionBox(permissions = listOf(activityPermission)) {
-        UserActivityRecognitionContent()
+        UserActivityRecognitionContent(navController)
     }
 }
 
@@ -68,6 +68,112 @@ fun UserActivityRecognitionScreen() {
         "com.google.android.gms.permission.ACTIVITY_RECOGNITION",
     ],
 )
+@Composable
+fun UserActivityRecognitionContent(
+    navController: NavHostController
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val manager = remember {
+        UserActivityTransitionManager(context)
+    }
+    var currentUserActivity by remember {
+        mutableStateOf("Unknown")
+    }
+
+    // Calling deregister on dispose
+    DisposableEffect(LocalLifecycleOwner.current) {
+        onDispose {
+            scope.launch(Dispatchers.IO) {
+                manager.deregisterActivityTransitions()
+                Log.d("UserActivityRecognition", "Activity transitions deregistered")
+            }
+        }
+    }
+
+    // Register a local broadcast to receive activity transition updates
+    UserActivityBroadcastReceiver(systemAction = CUSTOM_INTENT_USER_ACTION) { userActivity ->
+        currentUserActivity = userActivity
+        Log.d("UserActivityRecognition", "Received user activity: $userActivity")
+    }
+
+    ScalingLazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            BackNavigationButton(navController = navController)
+        }
+        item {
+            Button(
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        manager.registerActivityTransitions()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            )
+            {
+                Text(text = "Register for activity transition updates")
+            }
+        }
+        item {
+            Button(
+                onClick = {
+                    currentUserActivity = ""
+                    scope.launch(Dispatchers.IO) {
+                        manager.deregisterActivityTransitions()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            ) {
+                Text(text = "Deregister for activity transition updates")
+            }
+        }
+        item {
+            if (currentUserActivity.isNotBlank()) {
+                Text(
+                    text = "CurrentActivity is = $currentUserActivity",
+
+                )
+            }
+        }
+
+    }
+}
+
+@ExperimentalPermissionsApi
+@Preview(
+    device = Devices.WEAR_OS_SMALL_ROUND,
+    showBackground = false,
+    showSystemUi = true
+)
+@Composable
+fun UserActivityRecognitionScreenPreview() {
+    val context = LocalContext.current // Mock implementation of LocalContext
+    val lifecycleOwner = LocalLifecycleOwner.current // Mock implementation of LocalLifecycleOwner
+
+    // Provide mock values for CompositionLocals
+    CompositionLocalProvider(
+        LocalContext provides context,
+        LocalLifecycleOwner provides lifecycleOwner
+    ) {
+        IngestionAppTheme {
+            val navController = rememberNavController() // Create a NavController instance
+            UserActivityRecognitionContent(navController = navController)
+
+        }
+    }
+}
+
+/*@SuppressLint("MissingPermission")
 @Composable
 fun UserActivityRecognitionContent() {
     val context = LocalContext.current
@@ -93,42 +199,66 @@ fun UserActivityRecognitionContent() {
         currentUserActivity = userActivity
     }
 
-    ScalingLazyColumn(
+    val configuration = LocalConfiguration.current
+    val isRound = configuration.isScreenRound
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            Button(
-                onClick = {
-                    scope.launch(Dispatchers.IO) {
-                        manager.registerActivityTransitions()
-                    }
-
-                },
-            )
-            {
-                Text(text = "Register for activity transition updates")
-            }
-        }
-        item {
-            Button(
-                onClick = {
-                    currentUserActivity = ""
-                    scope.launch(Dispatchers.IO) {
-                        manager.deregisterActivityTransitions()
-                    }
-                },
-            ) {
-                Text(text = "Deregister for activity transition updates")
-            }
-            if (currentUserActivity.isNotBlank()) {
-                Text(
-                    text = "CurrentActivity is = $currentUserActivity",
+        Button(
+            onClick = {
+                scope.launch(Dispatchers.IO) {
+                    manager.registerActivityTransitions()
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        ) {
+            Text(
+                text = "Register for updates",
+                style = MaterialTheme.typography.body1.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
-            }
+            )
+        }
+
+        Button(
+            onClick = {
+                currentUserActivity = ""
+                scope.launch(Dispatchers.IO) {
+                    manager.deregisterActivityTransitions()
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        ) {
+            Text(
+                text = "Deregister updates",
+                style = MaterialTheme.typography.body1.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            )
+        }
+
+        if (currentUserActivity.isNotBlank()) {
+            Text(
+                text = "Current Activity: $currentUserActivity",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body2.copy(
+                    color = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
         }
     }
 }
@@ -136,7 +266,7 @@ fun UserActivityRecognitionContent() {
 @ExperimentalPermissionsApi
 @Preview(
     device = Devices.WEAR_OS_SMALL_ROUND,
-    showBackground = false,
+    showBackground = true,
     showSystemUi = true
 )
 @Composable
@@ -149,9 +279,6 @@ fun UserActivityRecognitionScreenPreview() {
         LocalContext provides context,
         LocalLifecycleOwner provides lifecycleOwner
     ) {
-        IngestionAppTheme {
-            UserActivityRecognitionContent()
-        }
+        UserActivityRecognitionContent()
     }
-}
-
+}*/
