@@ -36,16 +36,17 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.android.catalog.framework.annotations.Sample
 
 
-const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
+//const val CUSTOM_INTENT_USER_ACTION = "USER-ACTIVITY-DETECTION-INTENT-ACTION"
 
 @SuppressLint("MissingPermission")
-/*@Sample(
+@Sample(
     name = "Location - User Activity Recognition",
     description = "This Sample demonstrate detection of user activity like walking, driving, etc.",
     documentation = "https://developer.android.com/training/location/transitions",
-)*/
+)
 @Composable
 fun UserActivityRecognitionScreen(
     navController: NavHostController
@@ -80,6 +81,7 @@ fun UserActivityRecognitionContent(
     var currentUserActivity by remember {
         mutableStateOf("Unknown")
     }
+
 
     // Calling deregister on dispose
     DisposableEffect(LocalLifecycleOwner.current) {
@@ -149,6 +151,7 @@ fun UserActivityRecognitionContent(
     }
 }
 
+/*
 @ExperimentalPermissionsApi
 @Preview(
     device = Devices.WEAR_OS_SMALL_ROUND,
@@ -172,113 +175,4 @@ fun UserActivityRecognitionScreenPreview() {
         }
     }
 }
-
-/*@SuppressLint("MissingPermission")
-@Composable
-fun UserActivityRecognitionContent() {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val manager = remember {
-        UserActivityTransitionManager(context)
-    }
-    var currentUserActivity by remember {
-        mutableStateOf("Unknown")
-    }
-
-    // Calling deregister on dispose
-    DisposableEffect(LocalLifecycleOwner.current) {
-        onDispose {
-            scope.launch(Dispatchers.IO) {
-                manager.deregisterActivityTransitions()
-            }
-        }
-    }
-
-    // Register a local broadcast to receive activity transition updates
-    UserActivityBroadcastReceiver(systemAction = CUSTOM_INTENT_USER_ACTION) { userActivity ->
-        currentUserActivity = userActivity
-    }
-
-    val configuration = LocalConfiguration.current
-    val isRound = configuration.isScreenRound
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = {
-                scope.launch(Dispatchers.IO) {
-                    manager.registerActivityTransitions()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-        ) {
-            Text(
-                text = "Register for updates",
-                style = MaterialTheme.typography.body1.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            )
-        }
-
-        Button(
-            onClick = {
-                currentUserActivity = ""
-                scope.launch(Dispatchers.IO) {
-                    manager.deregisterActivityTransitions()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-        ) {
-            Text(
-                text = "Deregister updates",
-                style = MaterialTheme.typography.body1.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            )
-        }
-
-        if (currentUserActivity.isNotBlank()) {
-            Text(
-                text = "Current Activity: $currentUserActivity",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body2.copy(
-                    color = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-        }
-    }
-}
-
-@ExperimentalPermissionsApi
-@Preview(
-    device = Devices.WEAR_OS_SMALL_ROUND,
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun UserActivityRecognitionScreenPreview() {
-    val context = LocalContext.current // Mock implementation of LocalContext
-    val lifecycleOwner = LocalLifecycleOwner.current // Mock implementation of LocalLifecycleOwner
-
-    // Provide mock values for CompositionLocals
-    CompositionLocalProvider(
-        LocalContext provides context,
-        LocalLifecycleOwner provides lifecycleOwner
-    ) {
-        UserActivityRecognitionContent()
-    }
-}*/
+*/

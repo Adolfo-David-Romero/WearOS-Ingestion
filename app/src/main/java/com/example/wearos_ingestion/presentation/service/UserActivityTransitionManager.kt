@@ -69,6 +69,9 @@ class UserActivityTransitionManager(context: Context) {
             getUserActivity(
                 DetectedActivity.RUNNING, ActivityTransition.ACTIVITY_TRANSITION_EXIT
             ),
+                getUserActivity(
+                    DetectedActivity.STILL, ActivityTransition.ACTIVITY_TRANSITION_ENTER
+                ),
         )
     }
 

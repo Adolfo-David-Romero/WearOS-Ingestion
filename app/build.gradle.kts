@@ -115,6 +115,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("androidx.annotation:annotation:1.7.1")
 
+    implementation("com.google.android.catalog.framework:casa-annotations:0.5.1")
     implementation("com.google.android.gms:play-services-wearable:18.1.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")

@@ -232,23 +232,3 @@ private fun PermissionScreen(
         )
     }
 }
-/*@OptIn(ExperimentalPermissionsApi::class)
-@Preview(
-    device = Devices.WEAR_OS_SMALL_ROUND,
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun PermissionScreenPreview() {
-    val state = rememberMultiplePermissionsState(listOf(Manifest.permission.ACCESS_FINE_LOCATION))
-    val description = "This sample requires access to location." // Replace with your desired description
-    val errorText = "Permission required for the sample." // Replace with your desired error text
-
-    IngestionAppTheme {
-        PermissionScreen(
-            state = state,
-            description = description,
-            errorText = errorText
-        )
-    }
-}*/
