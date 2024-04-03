@@ -1,6 +1,9 @@
-package com.example.wearos_ingestion.presentation.presentation.activityrecognition
-
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -20,23 +23,19 @@ import com.google.accompanist.permissions.isGranted
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WalkingARToggle(
+    text: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    permissionState: PermissionState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+
 ) {
+
     ToggleChip(
         modifier = modifier,
         checked = checked,
+        onCheckedChange = onCheckedChange,
         colors = ToggleChipDefaults.toggleChipColors(),
-        onCheckedChange = { enabled ->
-            if (permissionState.status.isGranted) {
-                onCheckedChange(enabled)
-            } else {
-                permissionState.launchPermissionRequest()
-            }
-        },
-        label = { Text(stringResource(id = R.string.walking_ar_toggle)) },
+        label = { Text(text) },
         toggleControl = {
             Icon(
                 imageVector = ToggleChipDefaults.switchIcon(checked),
@@ -45,6 +44,7 @@ fun WalkingARToggle(
         }
     )
 }
+/*
 @OptIn(ExperimentalPermissionsApi::class)
 @Preview(
     device = Devices.WEAR_OS_SMALL_ROUND,
@@ -52,16 +52,12 @@ fun WalkingARToggle(
 )
 @Composable
 fun WalkingARTogglePreview() {
-    val permissionState = object : PermissionState {
-        override val permission = PERMISSION
-        override val status: PermissionStatus = PermissionStatus.Granted
-        override fun launchPermissionRequest() {}
-    }
     IngestionAppTheme {
+        var isChecked by remember { mutableStateOf(true) } // Example toggle state
         WalkingARToggle(
-            checked = true,
-            onCheckedChange = {},
-            permissionState = permissionState
+            text = "WALKING",
+            modifier = Modifier,
+
         )
     }
-}
+}*/

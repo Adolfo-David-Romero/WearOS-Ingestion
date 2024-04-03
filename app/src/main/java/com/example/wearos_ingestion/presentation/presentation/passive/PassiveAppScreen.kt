@@ -14,8 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.app.PERMISSION
-import com.example.wearos_ingestion.presentation.presentation.activityrecognition.OnFootARToggle
-import com.example.wearos_ingestion.presentation.presentation.activityrecognition.WalkingARToggle
+import com.example.wearos_ingestion.presentation.presentation.home.ADLNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.home.ActivityRecognitionNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.home.MeasureDataNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -38,8 +40,15 @@ fun PassiveAppScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        item{
+        /*item{
             ActivityRecognitionNavigationButton(navController = navController)
+        }
+        item{
+            //ADL
+            ADLNavigationButton(navController = navController)
+        }*/
+        item {
+            BackNavigationButton(navController = navController)
         }
         item {
             HeartRateToggle(
@@ -52,14 +61,6 @@ fun PassiveAppScreen(
             )
         }
         item {
-            WalkingARToggle(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-                checked = hrEnabled,
-                onCheckedChange = onEnableClick,
-                permissionState = permissionState)
-        }
-        item {
             HeartRateCard(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,9 +68,9 @@ fun PassiveAppScreen(
                 heartRate = hrValue
             )
         }
-        item {
+        /*item {
             MeasureDataNavigationButton(navController = navController)
-        }
+        }*/
 
     }
 }

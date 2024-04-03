@@ -109,6 +109,8 @@ fun UserActivityRecognitionContent(
         item {
             BackNavigationButton(navController = navController)
         }
+        item {  }
+
         item {
             Button(
                 onClick = {

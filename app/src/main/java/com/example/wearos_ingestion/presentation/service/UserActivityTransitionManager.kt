@@ -75,6 +75,7 @@ class UserActivityTransitionManager(context: Context) {
         )
     }
 
+
     private val activityClient = ActivityRecognition.getClient(context)
 
     private val pendingIntent by lazy {

@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionContent
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionScreen
+import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 
@@ -29,7 +30,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "passiveDataApp") {
+            //NavHost(navController = navController, startDestination = "passiveDataApp") {
+            NavHost(navController = navController, startDestination = "homeScreen") {
+                composable("homeScreen"){
+                    HomeScreen(navController = navController)
+                }
                 composable("passiveDataApp") {
                     PassiveDataApp(
                         healthServicesRepository = healthServicesRepository,
