@@ -6,6 +6,7 @@
 
 package com.example.wearos_ingestion.presentation.app
 
+import MyApp
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -51,6 +52,10 @@ class MainActivity : ComponentActivity() {
                 composable("userActivityRecognitionScreen") {
                     //UserActivityRecognitionContent(navController = navController)
                     UserActivityRecognitionScreen(navController)
+                }
+                composable("aDLScreen") {
+                    //UserActivityRecognitionContent(navController = navController)
+                    MyApp()
                 }
             }
         }
