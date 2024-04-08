@@ -47,10 +47,10 @@ class HealthServicesRepository(context: Context) {
         return DataType.HEART_RATE_BPM in capabilities.supportedDataTypesPassiveMonitoring
     }
     // Method to check if the device has elevation capability
-    suspend fun hasElevationCapability(): Boolean {
+    /*suspend fun hasElevationCapability(): Boolean {
         val capabilities = passiveMonitoringClient.getCapabilitiesAsync().await()
         return DataType.ABSOLUTE_ELEVATION in capabilities.supportedDataTypesPassiveMonitoring
-    }
+    }*/
 
 
 
@@ -62,7 +62,7 @@ class HealthServicesRepository(context: Context) {
         ).await()
     }
     // Method to register for elevation data
-    suspend fun registerForElevationData() {
+/*    suspend fun registerForElevationData() {
         if (hasElevationCapability()) {
             Log.i(TAG, "Registering for elevation data")
             passiveMonitoringClient.setPassiveListenerServiceAsync(
@@ -72,7 +72,7 @@ class HealthServicesRepository(context: Context) {
         } else {
             Log.i(TAG, "Elevation data not supported on this device")
         }
-    }
+    }*/
 
     suspend fun unregisterForHeartRateData() {
         Log.i(TAG, "Unregistering listeners")
@@ -108,10 +108,40 @@ class HealthServicesRepository(context: Context) {
         Log.d(TAG, "Registering for data")
         measureClient.registerMeasureCallback(DataType.HEART_RATE_BPM, callback)
 
+
         awaitClose {
             Log.d(TAG, "Unregistering for data")
             runBlocking {
                 measureClient.unregisterMeasureCallbackAsync(DataType.HEART_RATE_BPM, callback)
+                    .await()
+            }
+        }
+    }
+    fun elevationMeasureFlow() = callbackFlow {
+        val callback = object : MeasureCallback {
+            override fun onAvailabilityChanged(
+                dataType: DeltaDataType<*, *>,
+                availability: Availability
+            ) {
+                // Only send back DataTypeAvailability (not LocationAvailability)
+                if (availability is DataTypeAvailability) {
+                    trySendBlocking(MeasureMessage.MeasureAvailability(availability))
+                }
+            }
+
+            override fun onDataReceived(data: DataPointContainer) {
+                val elevationAbsolute = data.getData(DataType.ABSOLUTE_ELEVATION)
+                trySendBlocking(MeasureMessage.MeasureData(elevationAbsolute))
+            }
+        }
+
+        Log.d(TAG, "Registering for data")
+        measureClient.registerMeasureCallback(DataType.ABSOLUTE_ELEVATION, callback)
+
+        awaitClose {
+            Log.d(TAG, "Unregistering for data")
+            runBlocking {
+                measureClient.unregisterMeasureCallbackAsync(DataType.ABSOLUTE_ELEVATION, callback)
                     .await()
             }
         }

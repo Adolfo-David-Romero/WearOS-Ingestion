@@ -6,7 +6,7 @@
 
 package com.example.wearos_ingestion.presentation.app
 
-import MyApp
+import ADLScreen
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -14,12 +14,12 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionContent
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionScreen
 import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
+import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricApp
+import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
             //NavHost(navController = navController, startDestination = "passiveDataApp") {
             NavHost(navController = navController, startDestination = "homeScreen") {
                 composable("homeScreen"){
-                    HomeScreen(navController = navController)
+                    HomeScreen(navController = navController, healthServicesRepository)
                 }
                 composable("passiveDataApp") {
                     PassiveDataApp(
@@ -55,7 +55,11 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("aDLScreen") {
                     //UserActivityRecognitionContent(navController = navController)
-                    MyApp()
+                    ADLScreen()
+                }
+                composable("sensorMetricApp") {
+                    //UserActivityRecognitionContent(navController = navController)
+                    SensorMetricApp(healthServicesRepository, navController)
                 }
             }
         }

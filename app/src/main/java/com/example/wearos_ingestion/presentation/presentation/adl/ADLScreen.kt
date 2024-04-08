@@ -1,81 +1,116 @@
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.icu.util.Calendar
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TextField
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.MaterialTheme
+import androidx.compose.ui.unit.sp
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.Text
+import com.example.wearos_ingestion.presentation.presentation.adl.NotificationReceiver
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import java.time.LocalTime
+
+
 
 @Composable
-fun MyApp() {
+fun ADLScreen() {
     IngestionAppTheme {
-        Column(
+        var selectedTime by remember { mutableStateOf(Calendar.getInstance()) }
+        var timeText by remember { mutableStateOf("") }
+
+        val keyboardController = LocalSoftwareKeyboardController.current
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(16.dp)
         ) {
-            UserInput()
-        }
-
-    }
-}
-
-@Composable
-fun UserInput() {
-    var text by remember { mutableStateOf("") }
-    val context = LocalContext.current
-    val focusRequester = remember { FocusRequester() }
-
-    TextField(
-        value = text,
-        onValueChange = { newText ->
-            text = newText
-        },
-        label = { Text("Enter Text") },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                // Process the user input, for example:
-                // Toast.makeText(context, "User input: $text", Toast.LENGTH_SHORT).show()
+            ScalingLazyColumn(
+                modifier = Modifier
+                    .align(Alignment.Center)
+            ) {
+                item {
+                    OutlinedTextField(
+                        value = timeText,
+                        onValueChange = {
+                            timeText = it
+                            if (it.length == 2 && it.contains(":")) {
+                                val hour = it.substring(0, 2).toIntOrNull() ?: 0
+                                val minute = it.substring(3, it.length).toIntOrNull() ?: 0
+                                selectedTime.set(Calendar.HOUR_OF_DAY, hour)
+                                selectedTime.set(Calendar.MINUTE, minute)
+                            }
+                        },
+                        label = { Text(text = "Time (hh:mm)") },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Button(onClick = {
+                        // Save the selected time
+                        // For demonstration, you can replace it with your logic to save the time
+                        // For example, you can use SharedPreferences or any other data storage mechanism
+                        // For simplicity, just printing the selected time here
+                        println(
+                            "Selected Time: ${selectedTime.get(Calendar.HOUR_OF_DAY)}:${
+                                selectedTime.get(
+                                    Calendar.MINUTE
+                                )
+                            }"
+                        )
+                    }) {
+                        Text(text = "Save", fontSize = 18.sp)
+                    }
+                }
             }
-        ),
-        singleLine = true,
-        modifier = Modifier
-            .focusRequester(focusRequester)
-            .padding(8.dp)
-    )
-
-    DisposableEffect(Unit) {
-        focusRequester.requestFocus()
-        onDispose { }
+        }
     }
 }
+
+
+
+
 
 @ExperimentalPermissionsApi
 @Preview(
@@ -86,5 +121,5 @@ fun UserInput() {
 @Preview
 @Composable
 fun PreviewMyApp() {
-    MyApp()
+    ADLScreen()
 }

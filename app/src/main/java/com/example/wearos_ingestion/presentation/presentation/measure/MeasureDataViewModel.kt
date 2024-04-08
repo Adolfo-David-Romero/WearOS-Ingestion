@@ -18,6 +18,7 @@ class MeasureDataViewModel(
     val enabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     val hr: MutableState<Double> = mutableStateOf(0.0)
+    val elevation: MutableState<Double> = mutableStateOf(0.0) // Elevation level
     val availability: MutableState<DataTypeAvailability> =
         mutableStateOf(DataTypeAvailability.UNKNOWN)
 
@@ -32,10 +33,11 @@ class MeasureDataViewModel(
                 UiState.NotSupported
             }
         }
-
         viewModelScope.launch {
             enabled.collect {
                 if (it) {
+                    // Set elevation when enabled
+                    //elevation.value = 4 // Set elevation to 4dp when enabled
                     healthServicesRepository.heartRateMeasureFlow()
                         .takeWhile { enabled.value }
                         .collect { measureMessage ->
@@ -43,6 +45,26 @@ class MeasureDataViewModel(
                                 is MeasureMessage.MeasureData -> {
                                     hr.value = measureMessage.data.last().value
                                 }
+
+                                is MeasureMessage.MeasureAvailability -> {
+                                    availability.value = measureMessage.availability
+                                }
+                            }
+                        }
+                }
+            }
+        }
+        viewModelScope.launch {
+            enabled.collect {
+                if (it) {
+                    healthServicesRepository.elevationMeasureFlow()
+                        .takeWhile { enabled.value }
+                        .collect { measureMessage ->
+                            when (measureMessage) {
+                                is MeasureMessage.MeasureData -> {
+                                    elevation.value = measureMessage.data.last().value
+                                }
+
                                 is MeasureMessage.MeasureAvailability -> {
                                     availability.value = measureMessage.availability
                                 }
@@ -80,3 +102,18 @@ sealed class UiState {
     object NotSupported : UiState()
     object Supported : UiState()
 }
+/*else if (it) {
+                    healthServicesRepository.elevationMeasureFlow()
+                        .takeWhile { enabled.value }
+                        .collect { measureMessage ->
+                            when (measureMessage) {
+                                is MeasureMessage.MeasureData -> {
+                                    elevation.value = measureMessage.data.last().value
+                                }
+
+                                is MeasureMessage.MeasureAvailability -> {
+                                    availability.value = measureMessage.availability
+                                }
+                            }
+                        }
+                }*/

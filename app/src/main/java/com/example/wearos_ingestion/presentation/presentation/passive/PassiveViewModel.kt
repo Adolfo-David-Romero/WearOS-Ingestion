@@ -54,13 +54,13 @@ class PassiveViewModel(
             }
         }
         // Check for elevation capability and register for data
-        viewModelScope.launch {
+/*        viewModelScope.launch {
             if (healthServicesRepository.hasElevationCapability()) {
                 healthServicesRepository.registerForElevationData()
             } else {
                 Log.i(TAG, "Elevation data not supported on this device")
             }
-        }
+        }*/
     }
 
     fun toggleEnabled() {

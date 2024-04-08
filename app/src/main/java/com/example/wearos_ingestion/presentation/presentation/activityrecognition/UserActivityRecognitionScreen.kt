@@ -1,5 +1,6 @@
 package com.example.wearos_ingestion.presentation.presentation.activityrecognition
 
+import WalkingARToggle
 import android.annotation.SuppressLint
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
@@ -109,7 +110,9 @@ fun UserActivityRecognitionContent(
         item {
             BackNavigationButton(navController = navController)
         }
-        item {  }
+        item {
+
+        }
 
         item {
             Button(

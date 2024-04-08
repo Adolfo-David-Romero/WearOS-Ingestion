@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--Location Permissions Permission-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -22,6 +23,9 @@
     <uses-permission android:name="android.permission.BODY_SENSORS_BACKGROUND"/>
     <!-- Needed in order to re-register for data on device startup. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Needed in order to use alarms. -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
 
     <uses-feature
         android:name="android.hardware.type.watch"

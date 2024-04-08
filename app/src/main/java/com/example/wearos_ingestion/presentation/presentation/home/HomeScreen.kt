@@ -12,13 +12,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
+import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricScreen
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    healthServicesRepository: HealthServicesRepository
 ) {
     ScalingLazyColumn(
         modifier = Modifier
@@ -41,6 +44,10 @@ fun HomeScreen(
             //ADL
             ADLNavigationButton(navController = navController)
         }
+        item{
+            //Sensor
+            SensorMetricNavigationButton(navController = navController)
+        }
 
 
     }
@@ -59,10 +66,11 @@ fun HomeScreenPreview() {
         override val status: PermissionStatus = PermissionStatus.Granted
         override fun launchPermissionRequest() {}
     }*/
-    val navController = rememberNavController() // Create a NavController instance
+
+   /* val navController = rememberNavController() // Create a NavController instance
     IngestionAppTheme {
         HomeScreen(
             navController = navController
         )
-    }
+    }*/
 }
