@@ -37,14 +37,11 @@ fun SensorMetricApp(
                 )
             )
             val enabled by viewModel.enabled.collectAsState()
-            val hr by viewModel.hr
-            val elevation by viewModel.elevation
-            val availability by viewModel.availability
             val uiState by viewModel.uiState
 
             if (uiState == UiState.Supported) {
                 val permissionState = rememberPermissionState(
-                    permission = PERMISSION,
+                    permission = android.Manifest.permission.BODY_SENSORS,
                     onPermissionResult = { granted ->
                         if (granted) viewModel.toggleEnabled()
                     }

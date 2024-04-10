@@ -1,6 +1,7 @@
 package com.example.wearos_ingestion.presentation.presentation.measure
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.health.services.client.data.DataTypeAvailability
 import androidx.lifecycle.ViewModel
@@ -17,8 +18,10 @@ class MeasureDataViewModel(
 ) : ViewModel() {
     val enabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    val hr: MutableState<Double> = mutableStateOf(0.0)
-    val elevation: MutableState<Double> = mutableStateOf(0.0) // Elevation level
+    val hr: MutableState<Double> = mutableDoubleStateOf(0.0)
+    val elevation: MutableState<Double> = mutableDoubleStateOf(0.0) // Elevation level
+    val pace: MutableState<Double> = mutableDoubleStateOf(0.0) // Elevation level
+    val elevationStats: MutableState<Double> = mutableDoubleStateOf(0.0) // Elevation Stat
     val availability: MutableState<DataTypeAvailability> =
         mutableStateOf(DataTypeAvailability.UNKNOWN)
 
@@ -26,7 +29,7 @@ class MeasureDataViewModel(
 
     init {
         viewModelScope.launch {
-            val supported = healthServicesRepository.hasHeartRateCapability()
+            val supported = healthServicesRepository.hasMeasuredHeartRateCapability()
             uiState.value = if (supported) {
                 UiState.Supported
             } else {
@@ -36,8 +39,6 @@ class MeasureDataViewModel(
         viewModelScope.launch {
             enabled.collect {
                 if (it) {
-                    // Set elevation when enabled
-                    //elevation.value = 4 // Set elevation to 4dp when enabled
                     healthServicesRepository.heartRateMeasureFlow()
                         .takeWhile { enabled.value }
                         .collect { measureMessage ->
@@ -52,9 +53,41 @@ class MeasureDataViewModel(
                             }
                         }
                 }
+                //--
+                if (it) {
+                    healthServicesRepository.elevationMeasureFlow()
+                        .takeWhile { enabled.value }
+                        .collect { measureMessage ->
+                            when (measureMessage) {
+                                is MeasureMessage.MeasureData -> {
+                                    elevation.value = measureMessage.data.last().value
+                                }
+
+                                is MeasureMessage.MeasureAvailability -> {
+                                    availability.value = measureMessage.availability
+                                }
+                            }
+                        }
+                }
+                //--
+                if (it) {
+                    healthServicesRepository.paceMeasureFlow()
+                        .takeWhile { enabled.value }
+                        .collect { measureMessage ->
+                            when (measureMessage) {
+                                is MeasureMessage.MeasureData -> {
+                                    pace.value = measureMessage.data.last().value
+                                }
+
+                                is MeasureMessage.MeasureAvailability -> {
+                                    availability.value = measureMessage.availability
+                                }
+                            }
+                        }
+                }
             }
         }
-        viewModelScope.launch {
+/*        viewModelScope.launch {
             enabled.collect {
                 if (it) {
                     healthServicesRepository.elevationMeasureFlow()
@@ -71,8 +104,30 @@ class MeasureDataViewModel(
                             }
                         }
                 }
+
             }
-        }
+        }*/
+/*        viewModelScope.launch {
+            enabled.collect {
+                if (it) {
+                    healthServicesRepository.paceMeasureFlow()
+                        .takeWhile { enabled.value }
+                        .collect { measureMessage ->
+                            when (measureMessage) {
+                                is MeasureMessage.MeasureData -> {
+                                    pace.value = measureMessage.data.last().value
+                                }
+
+                                is MeasureMessage.MeasureAvailability -> {
+                                    availability.value = measureMessage.availability
+                                }
+                            }
+                        }
+                }
+            }
+        }*/
+
+
     }
 
     fun toggleEnabled() {

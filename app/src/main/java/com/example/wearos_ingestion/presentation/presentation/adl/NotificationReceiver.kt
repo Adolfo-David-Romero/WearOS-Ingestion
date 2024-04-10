@@ -23,8 +23,10 @@ class NotificationReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, "dinner_channel")
             .setContentTitle("Dinner Time")
             .setContentText("It's time for dinner!")
+            .setSmallIcon(R.drawable.splash_icon)
             .build()
 
         notificationManager.notify(0, notification)
     }
 }
+

@@ -31,6 +31,9 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        /**
+        Navigation Button routing
+         */
         item{
             ActivityRecognitionNavigationButton(navController = navController)
         }

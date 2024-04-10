@@ -40,39 +40,6 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
-/*
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun SensorMetricScreen(
-    healthServicesRepository: HealthServicesRepository,
-    navController: NavHostController
-) {
-    IngestionAppTheme {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            timeText = { TimeText() }
-        ) {
-            val viewModel: MeasureDataViewModel = viewModel(
-                factory = MeasureDataViewModelFactory(
-                    healthServicesRepository = healthServicesRepository
-                )
-            )
-
-            val elevation by viewModel.elevation
-
-
-            BackNavigationButton(navController = navController)
-
-            Text(
-                text = "Current Elevation: $elevation dp",
-                modifier = Modifier.padding(bottom = 16.dp),
-                textAlign = TextAlign.Center
-            )
-
-
-        }
-    }
-}*/
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SensorMetricScreen(
@@ -89,11 +56,15 @@ fun SensorMetricScreen(
     ) {
         val hr by viewModel.hr
         val elevation by viewModel.elevation
+        val pace by viewModel.pace
         item {
             BackNavigationButton(navController = navController)
         }
         item {
             Text(text = "Elevation: $elevation")
+        }
+        item {
+            Text(text = "Pace: $pace")
         }
         item {
             Text(text = "BPM: $hr")

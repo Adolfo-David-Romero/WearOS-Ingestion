@@ -6,15 +6,15 @@
 
 package com.example.wearos_ingestion.presentation.app
 
-import ADLScreen
-import android.os.Bundle
 
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionScreen
+import com.example.wearos_ingestion.presentation.presentation.adl.ADLScreen
 import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("aDLScreen") {
                     //UserActivityRecognitionContent(navController = navController)
-                    ADLScreen()
+                    ADLScreen(navController)
                 }
                 composable("sensorMetricApp") {
                     //UserActivityRecognitionContent(navController = navController)

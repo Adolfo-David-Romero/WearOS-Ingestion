@@ -30,9 +30,9 @@ import kotlinx.coroutines.runBlocking
  * */
 class HealthServicesRepository(context: Context) {
     private val healthServicesClient = HealthServices.getClient(context)
+    private val dataTypes = setOf(DataType.HEART_RATE_BPM)
     /** Passive Client **/
     private val passiveMonitoringClient = healthServicesClient.passiveMonitoringClient
-    private val dataTypes = setOf(DataType.HEART_RATE_BPM)
 
     private val passiveListenerConfig = PassiveListenerConfig(
         dataTypes = dataTypes,
@@ -85,7 +85,14 @@ class HealthServicesRepository(context: Context) {
         val capabilities = measureClient.getCapabilitiesAsync().await()
         return (DataType.HEART_RATE_BPM in capabilities.supportedDataTypesMeasure)
     }
-
+    suspend fun hasMeasuredElevationCapability(): Boolean {
+        val capabilities = measureClient.getCapabilitiesAsync().await()
+        return (DataType.ABSOLUTE_ELEVATION in capabilities.supportedDataTypesMeasure)
+    }
+/*    suspend fun hasMeasuredElevationStatsCapability(): Boolean {
+        val capabilities = measureClient.getCapabilitiesAsync().await()
+        return (DataType.ABSOLUTE_ELEVATION_STATS in capabilities.supportedDataTypesMeasure)
+    }*/
 
     fun heartRateMeasureFlow() = callbackFlow {
         val callback = object : MeasureCallback {
@@ -142,6 +149,35 @@ class HealthServicesRepository(context: Context) {
             Log.d(TAG, "Unregistering for data")
             runBlocking {
                 measureClient.unregisterMeasureCallbackAsync(DataType.ABSOLUTE_ELEVATION, callback)
+                    .await()
+            }
+        }
+    }
+    fun paceMeasureFlow() = callbackFlow {
+        val callback = object : MeasureCallback {
+            override fun onAvailabilityChanged(
+                dataType: DeltaDataType<*, *>,
+                availability: Availability
+            ) {
+                // Only send back DataTypeAvailability (not LocationAvailability)
+                if (availability is DataTypeAvailability) {
+                    trySendBlocking(MeasureMessage.MeasureAvailability(availability))
+                }
+            }
+
+            override fun onDataReceived(data: DataPointContainer) {
+                val pace = data.getData(DataType.PACE)
+                trySendBlocking(MeasureMessage.MeasureData(pace))
+            }
+        }
+
+        Log.d(TAG, "Registering for data")
+        measureClient.registerMeasureCallback(DataType.PACE, callback)
+
+        awaitClose {
+            Log.d(TAG, "Unregistering for data")
+            runBlocking {
+                measureClient.unregisterMeasureCallbackAsync(DataType.PACE, callback)
                     .await()
             }
         }
