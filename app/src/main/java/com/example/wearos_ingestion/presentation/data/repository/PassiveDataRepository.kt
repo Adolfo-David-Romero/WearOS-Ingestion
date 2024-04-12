@@ -25,8 +25,8 @@ class PassiveDataRepository(private val context: Context) {
     val latestHeartRate: Flow<Double> = context.dataStore.data.map { prefs ->
         prefs[LATEST_HEART_RATE] ?: 0.0
     }
-    val latestElevation: Flow<Double> = context.dataStore.data.map { prefs ->
-        prefs[LATEST_ELEVATION] ?: 0.0
+    val latestElevationGain: Flow<Double> = context.dataStore.data.map { prefs ->
+        prefs[LATEST_ELEVATION_GAIN] ?: 0.0
     }
 
 
@@ -35,16 +35,17 @@ class PassiveDataRepository(private val context: Context) {
             prefs[LATEST_HEART_RATE] = heartRate
         }
     }
-    suspend fun storeLatestElevation(elevation: Double) {
+    suspend fun storeLatestElevationGain(elevation: Double) {
         context.dataStore.edit { prefs ->
-            prefs[LATEST_ELEVATION] = elevation
+            prefs[LATEST_ELEVATION_GAIN] = elevation
         }
     }
 
     companion object {
         private val PASSIVE_DATA_ENABLED = booleanPreferencesKey("passive_data_enabled")
         private val LATEST_HEART_RATE = doublePreferencesKey("latest_heart_rate")
-        private val LATEST_ELEVATION = doublePreferencesKey("latest_elevation")
+        private val LATEST_ELEVATION_GAIN = doublePreferencesKey("latest_elevation_gain")
+
 
     }
 }

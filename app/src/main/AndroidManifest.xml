@@ -66,7 +66,7 @@
         </activity>
 
         <service
-            android:name=".presentation.service.PassiveDataService"
+            android:name=".presentation.presentation.passive.PassiveDataService"
             android:exported="true"
             android:permission="com.google.android.wearable.healthservices.permission.PASSIVE_DATA_BINDING" />
 

@@ -3,71 +3,84 @@ package com.example.wearos_ingestion.presentation.presentation.sensor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.health.services.client.data.DataTypeAvailability
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
 import com.example.wearos_ingestion.R
-import com.example.wearos_ingestion.presentation.app.PERMISSION
-import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
 import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
-import com.example.wearos_ingestion.presentation.presentation.measure.HrLabel
-import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataScreen
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataViewModel
-import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataViewModelFactory
-import com.example.wearos_ingestion.presentation.presentation.measure.NotSupportedScreen
-import com.example.wearos_ingestion.presentation.presentation.measure.UiState
-import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
+import com.example.wearos_ingestion.presentation.presentation.passive.PassiveViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SensorMetricScreen(
-    viewModel: MeasureDataViewModel,
+    measureViewModel: MeasureDataViewModel,
+    passiveViewModel: PassiveViewModel,
     enabled: Boolean,
     onButtonClick: () -> Unit,
     permissionState: PermissionState,
     navController: NavHostController
 ) {
+
+
     ScalingLazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val hr by viewModel.hr
-        val elevation by viewModel.elevation
-        val pace by viewModel.pace
+
+        /**Measure**/
+        val measureHr by measureViewModel.hr
+        val measureElevation by measureViewModel.elevation
+        val measurePace by measureViewModel.pace
+        val measureV02Max by measureViewModel.v02Max
+        val measureSupportedDataTypes by measureViewModel.supportedDataTypes
         item {
             BackNavigationButton(navController = navController)
         }
         item {
-            Text(text = "Elevation: $elevation")
+            Text(text = "---------Measure DataTypes---------")
         }
         item {
-            Text(text = "Pace: $pace")
+            Text(text = "Elevation: $measureElevation")
         }
         item {
-            Text(text = "BPM: $hr")
+            Text(text = "Pace: $measurePace")
+        }
+        item {
+            Text(text = "V_02 MAX: $measureV02Max")
+        }
+        item {
+            Text(text = "BPM: $measureHr")
+        }
+        item {
+            Text(text = "Measure Device Capabilities:\n $measureSupportedDataTypes")
+
+        }
+        /**Passive**/
+        val supportedPassiveDataTypes by passiveViewModel.supportedDataTypesPassiveMonitoringNames
+        //val passiveElevationGain by passiveViewModel.elevationGainValue
+
+
+        item {
+            Text(text = "---------Passive DataTypes---------")
+        }
+        item {
+            //Text(text = "Elevation Gain: $passiveElevationGain")
+        }
+
+        item {
+            Text(text = "Passive Device Capabilities:\n $supportedPassiveDataTypes")
         }
         item {
             Button(
@@ -91,6 +104,7 @@ fun SensorMetricScreen(
     }
 }
 
+/*
 @ExperimentalPermissionsApi
 @Preview(
     device = Devices.WEAR_OS_SMALL_ROUND,
@@ -104,15 +118,19 @@ fun MeasureDataScreenPreview() {
         override val status: PermissionStatus = PermissionStatus.Granted
         override fun launchPermissionRequest() {}
     }
+    val viewModel: MeasureDataViewModel = viewModel(
+        factory = MeasureDataViewModelFactory(
+            healthServicesRepository = healthServicesRepository
+        )
+    )
     val navController = rememberNavController() // Create a NavController instance
     IngestionAppTheme {
-        MeasureDataScreen(
-            hr = 65.0,
-            availability = DataTypeAvailability.AVAILABLE,
+        SensorMetricScreen(
+            viewModel = viewModel,
             enabled = false,
             onButtonClick = {},
             permissionState = permissionState,
             navController = navController
         )
     }
-}
+}*/

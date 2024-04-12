@@ -6,6 +6,7 @@ import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepo
 
 const val TAG = "Passive Data Sample"
 const val PERMISSION = android.Manifest.permission.BODY_SENSORS
+const val LOCATIONPERMISSION = android.Manifest.permission.ACCESS_FINE_LOCATION
 
 class MainApplication : Application() {
     val healthServicesRepository by lazy { HealthServicesRepository(this) }

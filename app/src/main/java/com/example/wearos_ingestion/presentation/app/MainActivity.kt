@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("sensorMetricApp") {
                     //UserActivityRecognitionContent(navController = navController)
-                    SensorMetricApp(healthServicesRepository, navController)
+                    SensorMetricApp(healthServicesRepository, passiveDataRepository ,navController)
                 }
             }
         }

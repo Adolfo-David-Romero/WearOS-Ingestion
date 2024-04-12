@@ -9,13 +9,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.TimeText
-import com.example.wearos_ingestion.presentation.app.PERMISSION
+import com.example.wearos_ingestion.presentation.app.LOCATIONPERMISSION
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
-import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataScreen
+import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataViewModel
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataViewModelFactory
 import com.example.wearos_ingestion.presentation.presentation.measure.NotSupportedScreen
 import com.example.wearos_ingestion.presentation.presentation.measure.UiState
+import com.example.wearos_ingestion.presentation.presentation.passive.IngestionViewModelFactory
+import com.example.wearos_ingestion.presentation.presentation.passive.PassiveViewModel
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -24,6 +26,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 @Composable
 fun SensorMetricApp(
     healthServicesRepository: HealthServicesRepository,
+    passiveDataRepository: PassiveDataRepository,
     navController: NavHostController
 ) {
     IngestionAppTheme {
@@ -31,25 +34,35 @@ fun SensorMetricApp(
             modifier = Modifier.fillMaxSize(),
             timeText = { TimeText() }
         ) {
-            val viewModel: MeasureDataViewModel = viewModel(
+
+
+
+            val measureViewModel: MeasureDataViewModel = viewModel(
                 factory = MeasureDataViewModelFactory(
                     healthServicesRepository = healthServicesRepository
                 )
             )
-            val enabled by viewModel.enabled.collectAsState()
-            val uiState by viewModel.uiState
+            val passiveViewModel: PassiveViewModel = viewModel(
+                factory = IngestionViewModelFactory(
+                    healthServicesRepository = healthServicesRepository,
+                    passiveDataRepository = passiveDataRepository
+                )
+            )
+            val enabled by measureViewModel.enabled.collectAsState()
+            val uiState by measureViewModel.uiState
 
             if (uiState == UiState.Supported) {
                 val permissionState = rememberPermissionState(
-                    permission = android.Manifest.permission.BODY_SENSORS,
+                    permission = LOCATIONPERMISSION ,
                     onPermissionResult = { granted ->
-                        if (granted) viewModel.toggleEnabled()
+                        if (granted) measureViewModel.toggleEnabled()
                     }
                 )
                 SensorMetricScreen(
-                    viewModel = viewModel,
+                    measureViewModel = measureViewModel,
+                    passiveViewModel = passiveViewModel,
                     enabled = enabled,
-                    onButtonClick = { viewModel.toggleEnabled() },
+                    onButtonClick = { measureViewModel.toggleEnabled() },
                     permissionState = permissionState,
                     navController = navController
                 )

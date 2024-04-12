@@ -1,10 +1,10 @@
-package com.example.wearos_ingestion.presentation.service
+package com.example.wearos_ingestion.presentation.presentation.passive
 
 import androidx.health.services.client.PassiveListenerService
 import androidx.health.services.client.data.DataPointContainer
 import androidx.health.services.client.data.DataType
 import com.example.wearos_ingestion.presentation.data.repository.PassiveDataRepository
-import com.example.wearos_ingestion.presentation.data.repository.latestElevation
+import com.example.wearos_ingestion.presentation.data.repository.latestElevationGain
 import com.example.wearos_ingestion.presentation.data.repository.latestHeartRate
 import kotlinx.coroutines.runBlocking
 
@@ -17,8 +17,8 @@ class PassiveDataService : PassiveListenerService(){
                 repository.storeLatestHeartRate(it)
             }
             // Handle elevation data
-            dataPoints.getData(DataType.ABSOLUTE_ELEVATION).latestElevation()?.let {
-                repository.storeLatestElevation(it)
+            dataPoints.getData(DataType.ELEVATION_GAIN).latestElevationGain()?.let {
+                repository.storeLatestElevationGain(it)
             }
         }
     }
