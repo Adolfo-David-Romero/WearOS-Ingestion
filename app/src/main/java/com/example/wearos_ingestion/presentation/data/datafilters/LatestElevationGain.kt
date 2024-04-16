@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.data.repository
+package com.example.wearos_ingestion.presentation.data.datafilters
 
 import androidx.health.services.client.data.DataType
 import androidx.health.services.client.data.IntervalDataPoint
@@ -7,6 +7,6 @@ import androidx.health.services.client.data.IntervalDataPoint
 fun List<IntervalDataPoint<Double>>.latestElevationGain(): Double? {
     return this
         .filter { it.dataType == DataType.ELEVATION_GAIN }
-        .map { it.value }
-        .firstOrNull()
+        .maxByOrNull { it.startDurationFromBoot.toMillis() } // Find the maximum start duration
+        ?.value
 }

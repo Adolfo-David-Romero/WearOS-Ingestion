@@ -58,7 +58,7 @@ fun PassiveDataApp(
 
 
             } else if (uiState == UiState.NotSupported) {
-                NotSupportedScreen()
+                NotSupportedScreen(navController)
             }
         }
     }

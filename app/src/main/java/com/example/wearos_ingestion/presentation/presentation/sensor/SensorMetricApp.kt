@@ -36,7 +36,6 @@ fun SensorMetricApp(
         ) {
 
 
-
             val measureViewModel: MeasureDataViewModel = viewModel(
                 factory = MeasureDataViewModelFactory(
                     healthServicesRepository = healthServicesRepository
@@ -48,12 +47,30 @@ fun SensorMetricApp(
                     passiveDataRepository = passiveDataRepository
                 )
             )
+            val passiveElevationGain by passiveViewModel.elevationGainValue.collectAsState()
+            val passiveFloors by passiveViewModel.floorsValue.collectAsState()
+            val passiveCalories by passiveViewModel.caloriesValue.collectAsState()
+            val passiveDailyCalories by passiveViewModel.dailyCaloriesValue.collectAsState()
+            val passiveDailyDistance by passiveViewModel.dailyDistanceValue.collectAsState()
+            val passiveDistance by passiveViewModel.distanceValue.collectAsState()
+            val passiveDailySteps by passiveViewModel.dailyStepsValue.collectAsState()
+            val passiveSteps by passiveViewModel.stepsValue.collectAsState()
+            val passiveDailyFloors by passiveViewModel.dailyFloorsValue.collectAsState()
+
+            /*            val hrEnabled by passiveViewModel.hrEnabled.collectAsState()
+                        val elevationGainEnabled by passiveViewModel.elevationGainEnabled.collectAsState()
+                        val caloriesEnabled by passiveViewModel.caloriesEnabled.collectAsState()
+
+                        val passiveDataTypesEnabled: Boolean = hrEnabled && elevationGainEnabled && caloriesEnabled*/
+
+
             val enabled by measureViewModel.enabled.collectAsState()
             val uiState by measureViewModel.uiState
 
+
             if (uiState == UiState.Supported) {
                 val permissionState = rememberPermissionState(
-                    permission = LOCATIONPERMISSION ,
+                    permission = LOCATIONPERMISSION,
                     onPermissionResult = { granted ->
                         if (granted) measureViewModel.toggleEnabled()
                     }
@@ -61,6 +78,15 @@ fun SensorMetricApp(
                 SensorMetricScreen(
                     measureViewModel = measureViewModel,
                     passiveViewModel = passiveViewModel,
+                    elevationGainValue = passiveElevationGain,
+                    floorsValue = passiveFloors,
+                    caloriesValue = passiveCalories,
+                    dailyCaloriesValue = passiveDailyCalories,
+                    dailyDistanceValue = passiveDailyDistance,
+                    distanceValue = passiveDistance,
+                    dailyStepsValue = passiveDailySteps,
+                    stepsValue = passiveSteps,
+                    dailyFloorsValue = passiveDailyFloors,
                     enabled = enabled,
                     onButtonClick = { measureViewModel.toggleEnabled() },
                     permissionState = permissionState,

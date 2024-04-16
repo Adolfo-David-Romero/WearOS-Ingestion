@@ -15,13 +15,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.wearos_ingestion.R
+import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 
 @Composable
-fun NotSupportedScreen() {
+fun NotSupportedScreen(
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,6 +34,7 @@ fun NotSupportedScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        BackNavigationButton(navController = navController)
         Icon(
             imageVector = Icons.Default.HeartBroken,
             contentDescription = stringResource(id = R.string.broken_heart_description),
@@ -47,7 +53,8 @@ fun NotSupportedScreen() {
 )
 @Composable
 fun NotSupportedScreenPreview() {
+    val navController = rememberNavController() // Create a NavController instance
     IngestionAppTheme {
-        NotSupportedScreen()
+        NotSupportedScreen(navController)
     }
 }
