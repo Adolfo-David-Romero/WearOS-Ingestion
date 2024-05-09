@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,14 +13,13 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Text
 import com.example.wearos_ingestion.R
-import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataViewModel
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveViewModel
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -144,7 +141,19 @@ fun SensorMetricScreen(
             item {
                 //PassiveToggle(checked = enabled, onCheckedChange = onButtonClick, permissionState = )
             }
-
+            /**Exercise**/
+            item {
+                Text(text = "-----------------------------")
+            }
+            item {
+                Text(text = "--Exercise DataTypes--")
+            }
+            item {
+                Text(text = "Exercise Capabilities:")
+            }
+            item {
+                Text(text = "-----------------------------")
+            }
         }
     }
 

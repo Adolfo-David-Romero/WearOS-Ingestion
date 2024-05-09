@@ -1,6 +1,5 @@
 package com.example.wearos_ingestion.presentation.presentation.activityrecognition
 
-import WalkingARToggle
 import android.annotation.SuppressLint
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
@@ -29,14 +28,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
-import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.google.android.catalog.framework.annotations.Sample
 
 

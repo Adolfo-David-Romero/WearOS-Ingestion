@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.wearos_ingestion.R
-import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 
 @Composable

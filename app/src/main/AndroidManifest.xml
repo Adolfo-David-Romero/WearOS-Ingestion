@@ -70,6 +70,7 @@
             android:exported="true"
             android:permission="com.google.android.wearable.healthservices.permission.PASSIVE_DATA_BINDING" />
 
+
         <!-- Receiver that re-registers for background data after a device restart. -->
         <receiver
             android:name=".presentation.service.StartupReceiver"
@@ -80,6 +81,7 @@
             </intent-filter>
 
         </receiver>
+
 
     </application>
 

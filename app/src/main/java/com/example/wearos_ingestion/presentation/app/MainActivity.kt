@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionScreen
 import com.example.wearos_ingestion.presentation.presentation.adl.ADLScreen
+import com.example.wearos_ingestion.presentation.presentation.geobubble.CurrentLocationScreen
 import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
@@ -60,6 +61,9 @@ class MainActivity : ComponentActivity() {
                 composable("sensorMetricApp") {
                     //UserActivityRecognitionContent(navController = navController)
                     SensorMetricApp(healthServicesRepository, passiveDataRepository ,navController)
+                }
+                composable("currentLocation") {
+                    CurrentLocationScreen(navController)
                 }
             }
         }

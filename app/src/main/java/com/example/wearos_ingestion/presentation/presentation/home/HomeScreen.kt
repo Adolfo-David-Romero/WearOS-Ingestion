@@ -51,6 +51,10 @@ fun HomeScreen(
             //Sensor
             SensorMetricNavigationButton(navController = navController)
         }
+        item{
+            //Sensor
+            CurrentLocationNavigationButton(navController = navController)
+        }
 
 
     }

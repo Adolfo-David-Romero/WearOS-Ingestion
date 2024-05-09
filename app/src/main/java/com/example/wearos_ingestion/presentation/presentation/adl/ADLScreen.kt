@@ -2,10 +2,8 @@ package com.example.wearos_ingestion.presentation.presentation.adl
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -14,18 +12,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,19 +28,12 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.health.services.client.data.DataTypeAvailability
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
-import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataScreen
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.PermissionStatus
-import kotlinx.coroutines.launch
-import java.util.Locale
 
 @Composable
 fun ADLScreen(
@@ -69,7 +54,7 @@ fun ADLScreen(
             modifier = Modifier
                 .align(Alignment.Center)
         ) {
-            item{ BackNavigationButton(navController = navController)}
+            item{ BackNavigationButton(navController = navController) }
             item {
                 OutlinedTextField(
                     value = selectedHour.toString(),

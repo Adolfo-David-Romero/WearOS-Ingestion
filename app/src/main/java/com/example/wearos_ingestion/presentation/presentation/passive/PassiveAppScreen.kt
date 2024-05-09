@@ -14,10 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.app.PERMISSION
-import com.example.wearos_ingestion.presentation.presentation.home.ADLNavigationButton
-import com.example.wearos_ingestion.presentation.presentation.home.ActivityRecognitionNavigationButton
-import com.example.wearos_ingestion.presentation.presentation.home.MeasureDataNavigationButton
-import com.example.wearos_ingestion.presentation.presentation.measure.BackNavigationButton
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState

@@ -42,8 +42,6 @@ class PassiveViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)
     val dailyFloorsValue = passiveDataRepository.latestDailyFloors
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)
-    /*    val dailyElevationGainValue = passiveDataRepository.latestDailyElevationGain
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Double.NaN)*/
 
 
     val supportedDataTypesPassiveMonitoringNames: MutableState<Set<String>> =
@@ -85,6 +83,12 @@ class PassiveViewModel(
                             && healthServicesRepository.hasPassiveElevationGainCapability()
                             && healthServicesRepository.hasPassiveFloorsCapability()
                             && healthServicesRepository.hasPassiveCaloriesCapability()
+                            && healthServicesRepository.hasPassiveDailyCaloriesCapability()
+                            && healthServicesRepository.hasPassiveDailyDistanceCapability()
+                            && healthServicesRepository.hasPassiveDistanceCapability()
+                            && healthServicesRepository.hasPassiveDailyStepsCapability()
+                            && healthServicesRepository.hasPassiveStepsCapability()
+                            && healthServicesRepository.hasPassiveDailyStepsCapability()
                     )
             uiState.value = if (supported) {
                 UiState.Supported

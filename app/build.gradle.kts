@@ -54,6 +54,14 @@ android {
 dependencies {
     val leanback_version = "1.2.0-alpha04"
 
+    //TensorFlow lite
+    implementation("org.tensorflow:tensorflow-lite:2.16.1")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-task-text:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-task-audio:0.4.4")
+
+
     implementation("androidx.leanback:leanback:$leanback_version")
     //--
     implementation("androidx.concurrent:concurrent-futures-ktx:1.1.0")

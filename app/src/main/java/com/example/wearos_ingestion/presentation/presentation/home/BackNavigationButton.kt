@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.measure
+package com.example.wearos_ingestion.presentation.presentation.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
