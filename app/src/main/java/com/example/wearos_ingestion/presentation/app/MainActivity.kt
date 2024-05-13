@@ -15,12 +15,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.UserActivityRecognitionScreen
 import com.example.wearos_ingestion.presentation.presentation.adl.ADLScreen
-import com.example.wearos_ingestion.presentation.presentation.geobubble.CurrentLocationScreen
+import com.example.wearos_ingestion.presentation.presentation.geobubble.UserLocation
+import com.example.wearos_ingestion.presentation.presentation.location.CurrentLocationScreen
 import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricApp
-import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricScreen
+
 
 
 class MainActivity : ComponentActivity() {
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
 
         val healthServicesRepository = (application as MainApplication).healthServicesRepository
         val passiveDataRepository = (application as MainApplication).passiveDataRepository
+
 
         setContent {
             val navController = rememberNavController()
@@ -64,6 +66,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("currentLocation") {
                     CurrentLocationScreen(navController)
+                }
+                composable("currentUserLocation") {
+                    UserLocation(navController)
                 }
             }
         }

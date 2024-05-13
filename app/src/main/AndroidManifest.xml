@@ -49,6 +49,10 @@
         android:theme="@android:style/Theme.DeviceDefault"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <!-- API key for the Android Maps API v2. The value is defined in local.properties. -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBSxFbm2MTSWjPZW7qSIcJYsntXB0JH0AU"/>
+
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true"/>

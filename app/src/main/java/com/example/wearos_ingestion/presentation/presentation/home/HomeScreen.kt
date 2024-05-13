@@ -10,11 +10,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.data.repository.HealthServicesRepository
-import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricScreen
-import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -54,6 +51,10 @@ fun HomeScreen(
         item{
             //Sensor
             CurrentLocationNavigationButton(navController = navController)
+        }
+        item{
+            //Sensor
+            GeoBubbleMapNavigationButton(navController = navController)
         }
 
 

@@ -1,4 +1,4 @@
-package com.example.wearos_ingestion.presentation.presentation.geobubble
+package com.example.wearos_ingestion.presentation.presentation.location
 
 /*
  * Copyright 2023 The Android Open Source Project
@@ -23,7 +23,6 @@ import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -39,12 +38,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -104,9 +100,10 @@ fun CurrentLocationContent(
     val locationClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
     }
-/*    var locationInfo by remember {
+    val userLocation by remember {
         mutableStateOf("")
-    }*/
+    }
+
     // The location request that defines the location updates
     var locationRequest by remember {
         mutableStateOf<LocationRequest?>(null)
@@ -126,13 +123,12 @@ fun CurrentLocationContent(
                                         "- Accuracy: ${currentLocation.accuracy}\n\n" +
                                         locationUpdates*/
 
-                locationUpdates = "Current location is \n" + "lat : ${currentLocation.latitude}\n" +
+                locationUpdates = "Current Location is \n" + "lat : ${currentLocation.latitude}\n" +
                         "long : ${currentLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}\n" +
                         "Accuracy: ${currentLocation.accuracy}\n\n"//+locationUpdates
             }
         }
     }
-
 
     ScalingLazyColumn(
         Modifier
@@ -164,7 +160,7 @@ fun CurrentLocationContent(
                         locationUpdates = if (result == null) {
                             "No last known location. Try fetching the current location first"
                         } else {
-                            "Current location is \n" + "lat : ${result.latitude}\n" +
+                            "Last known location is \n" + "lat : ${result.latitude}\n" +
                                     "long : ${result.longitude}\n" + "fetched at ${System.currentTimeMillis()}\n" +
                                     "Accuracy: ${result.accuracy}"
                         }
@@ -190,7 +186,7 @@ fun CurrentLocationContent(
                         ).await()
                         result?.let { fetchedLocation ->
                             locationUpdates =
-                                "Current location is \n" + "lat : ${fetchedLocation.latitude}\n" +
+                                "Location update is \n" + "lat : ${fetchedLocation.latitude}\n" +
                                         "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
 
                             Log.d(TAG, "Location Info: $locationUpdates")
@@ -224,6 +220,11 @@ fun CurrentLocationContent(
             }) {
                 Text(text = if (isButtonClicked) "Stop Location Updates" else "Request Location Updates")
             }
+        }
+        item {/*
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(, 10f)
+            }*/
         }
 
     }
@@ -269,3 +270,4 @@ fun LocationUpdatesEffect(
         }
     }
 }
+
