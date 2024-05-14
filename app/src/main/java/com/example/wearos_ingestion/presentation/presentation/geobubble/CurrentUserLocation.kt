@@ -8,7 +8,10 @@ import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.app.TAG
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.PermissionBox
+import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -103,8 +107,10 @@ fun CurrentUserLocation(
     }
     ScalingLazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        contentPadding = PaddingValues(top = 50.dp, bottom = 50.dp),
     ) {
+        item { BackNavigationButton(navController = navController) }
         item {
             Text(
                 text = "Enable location updates",
@@ -132,12 +138,15 @@ fun CurrentUserLocation(
                 },
             )
         }
+
         item{
-            Box {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)) {
                 //return locationUpdates
+
                 lat?.let { lon?.let { it1 -> GeobubbleMap(navController = navController, it, it1) } }
             }
-
         }
     }
 

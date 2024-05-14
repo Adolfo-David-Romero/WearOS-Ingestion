@@ -32,7 +32,8 @@ import java.lang.Float.parseFloat
 fun GeobubbleMap(
     navController: NavHostController,
     lat: Double,
-    lon: Double
+    lon: Double,
+    modifier: Modifier = Modifier
 ) {
     // State variable to track if the first pair of lat and lon has been received
     var isFirstPairReceived by remember { mutableStateOf(false) }
