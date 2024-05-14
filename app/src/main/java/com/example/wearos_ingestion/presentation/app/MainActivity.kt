@@ -21,7 +21,7 @@ import com.example.wearos_ingestion.presentation.presentation.home.HomeScreen
 import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDataApp
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricApp
-
+import com.example.wearos_ingestion.presentation.presentation.userfeedback.UserFeedbackScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -69,6 +69,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("currentUserLocation") {
                     UserLocation(navController)
+                }
+                composable("userFeedbackScreen") {
+                    UserFeedbackScreen(navController)
                 }
             }
         }

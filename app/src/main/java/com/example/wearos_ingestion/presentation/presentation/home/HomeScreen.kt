@@ -56,6 +56,10 @@ fun HomeScreen(
             //Sensor
             GeoBubbleMapNavigationButton(navController = navController)
         }
+        item{
+            //Sensor
+            UserFeedbackNavigationButton(navController = navController)
+        }
 
 
     }
