@@ -41,7 +41,8 @@ class HealthServicesRepository(context: Context) {
         DataType.STEPS_DAILY,
         DataType.STEPS,
         DataType.FLOORS_DAILY,
-        //DataType.ELEVATION_GAIN_TOTAL,
+        DataType.ELEVATION_GAIN_TOTAL,
+        DataType.ELEVATION_GAIN_DAILY
         //DataType.ELEVATION_LOSS,
     )
 
@@ -105,6 +106,10 @@ class HealthServicesRepository(context: Context) {
         val capabilities = passiveMonitoringClient.getCapabilitiesAsync().await()
         return DataType.ELEVATION_LOSS in capabilities.supportedDataTypesPassiveMonitoring
     }
+    suspend fun hasPassiveDailyElevationLossCapability(): Boolean {
+        val capabilities = passiveMonitoringClient.getCapabilitiesAsync().await()
+        return DataType.ELEVATION_GAIN_DAILY in capabilities.supportedDataTypesPassiveMonitoring
+    }
 
 
     /** Register/Unregister Datatype **/
@@ -121,6 +126,13 @@ class HealthServicesRepository(context: Context) {
     }
     suspend fun registerForElevationGainData() {
         Log.i(TAG, "Elevation Gain Data: Registering listener")
+        passiveMonitoringClient.setPassiveListenerServiceAsync(
+            PassiveDataService::class.java,
+            passiveListenerConfig
+        ).await()
+    }
+    suspend fun registerForDailyElevationGainData() {
+        Log.i(TAG, "Daily Elevation Gain Data: Registering listener")
         passiveMonitoringClient.setPassiveListenerServiceAsync(
             PassiveDataService::class.java,
             passiveListenerConfig
@@ -218,6 +230,10 @@ class HealthServicesRepository(context: Context) {
     }
     suspend fun unregisterForDailyFloorsData() {
         Log.i(TAG, "Daily Floors Data: Unregistering listeners")
+        passiveMonitoringClient.clearPassiveListenerServiceAsync().await()
+    }
+    suspend fun unregisterForDailyElevationGainData() {
+        Log.i(TAG, "Daily Elevation Gain Data: Unregistering listeners")
         passiveMonitoringClient.clearPassiveListenerServiceAsync().await()
     }
 

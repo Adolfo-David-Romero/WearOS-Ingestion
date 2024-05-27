@@ -145,7 +145,7 @@ fun CurrentUserLocation(
                 .height(250.dp)) {
                 //return locationUpdates
 
-                lat?.let { lon?.let { it1 -> GeobubbleMap(navController = navController, it, it1) } }
+                lat?.let { lon?.let { it1 -> GeobubbleMap(it, it1) } }
             }
         }
     }

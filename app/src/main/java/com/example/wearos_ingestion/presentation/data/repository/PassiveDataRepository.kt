@@ -52,6 +52,9 @@ class PassiveDataRepository(private val context: Context) {
     val latestDailyFloors: Flow<Double> = context.dataStore.data.map { prefs ->
         prefs[LATEST_DAILY_FLOORS] ?: 0.0
     }
+    val latestDailyElevationGain: Flow<Double> = context.dataStore.data.map { prefs ->
+        prefs[LATEST_DAILY_ELEVATION_GAIN] ?: 0.0
+    }
 
 
 
@@ -119,6 +122,7 @@ class PassiveDataRepository(private val context: Context) {
         private val LATEST_DAILY_STEPS = doublePreferencesKey("latest_daily_steps")
         private val LATEST_STEPS = doublePreferencesKey("latest_steps")
         private val LATEST_DAILY_FLOORS = doublePreferencesKey("latest_daily_floors")
+        private val LATEST_DAILY_ELEVATION_GAIN = doublePreferencesKey("latest_daily_elevation_gain")
 
 
     }

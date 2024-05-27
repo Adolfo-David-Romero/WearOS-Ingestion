@@ -58,6 +58,8 @@ dependencies {
     implementation ("com.google.maps.android:maps-compose:4.4.1")
 
     implementation("com.google.maps.android:android-maps-utils:0.6.2")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.maps.android:maps-utils-ktx:5.0.0")
 
     //TensorFlow lite
     implementation("org.tensorflow:tensorflow-lite:2.16.1")
@@ -126,7 +128,7 @@ dependencies {
     implementation ("androidx.compose.material:material:1.6.5")
 
     // Health Services
-    implementation("androidx.health:health-services-client:1.1.0-alpha02")
+    implementation("androidx.health:health-services-client:1.1.0-alpha03")
     implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("androidx.annotation:annotation:1.7.1")
