@@ -22,12 +22,13 @@ import com.example.wearos_ingestion.presentation.presentation.passive.PassiveDat
 import com.example.wearos_ingestion.presentation.presentation.measure.MeasureDataApp
 import com.example.wearos_ingestion.presentation.presentation.sensor.SensorMetricApp
 import com.example.wearos_ingestion.presentation.presentation.userfeedback.UserFeedbackScreen
+import com.google.firebase.FirebaseApp
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        FirebaseApp.initializeApp(this)
         val healthServicesRepository = (application as MainApplication).healthServicesRepository
         val passiveDataRepository = (application as MainApplication).passiveDataRepository
 

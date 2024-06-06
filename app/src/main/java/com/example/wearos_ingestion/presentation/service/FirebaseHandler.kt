@@ -6,14 +6,19 @@ import com.google.firebase.database.FirebaseDatabase
 class FirebaseHandler {
     private val TAG = "FirebaseHandler"
 
-     fun sendDataToFirebase(sensorData: String) {
-        val databaseReference = FirebaseDatabase.getInstance().getReference("sensorData")
+    fun sendLocationToFirebase(latitude: Double, longitude: Double) {
+        val databaseReference = FirebaseDatabase.getInstance().getReference("locations")
         val key = databaseReference.push().key
         key?.let {
-            databaseReference.child(key).setValue(sensorData)
+            val locationData = mapOf(
+                "latitude" to latitude,
+                "longitude" to longitude,
+                "timestamp" to System.currentTimeMillis()
+            )
+            databaseReference.child(key).setValue(locationData)
 
             // Log that data has been sent to Firebase
-            Log.d(TAG, "Sensor Data Sent to Firebase. Key: $key")
+            Log.d(TAG, "Location Data Sent to Firebase. Key: $key")
         }
     }
 }

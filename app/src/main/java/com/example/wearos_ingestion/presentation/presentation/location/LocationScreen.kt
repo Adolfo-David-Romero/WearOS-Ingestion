@@ -49,6 +49,7 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import com.example.wearos_ingestion.presentation.presentation.activityrecognition.PermissionBox
 import com.example.wearos_ingestion.presentation.presentation.home.BackNavigationButton
 import com.example.wearos_ingestion.presentation.presentation.measure.TAG
+import com.example.wearos_ingestion.presentation.service.FirebaseHandler
 import com.google.android.catalog.framework.annotations.Sample
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -56,6 +57,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -112,6 +114,12 @@ fun CurrentLocationContent(
     var locationUpdates by remember {
         mutableStateOf("")
     }
+    // Keeps track of the last known location
+    var lastKnownLocation by remember {
+        mutableStateOf<Pair<Double, Double>?>(null)
+    }
+    val firebaseHandler = FirebaseHandler()
+
     // Only register the location updates effect when we have a request
     if (locationRequest != null) {
         LocationUpdatesEffect(locationRequest!!, isButtonClicked = isButtonClicked) { result ->
@@ -126,6 +134,8 @@ fun CurrentLocationContent(
                 locationUpdates = "Current Location is \n" + "lat : ${currentLocation.latitude}\n" +
                         "long : ${currentLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}\n" +
                         "Accuracy: ${currentLocation.accuracy}\n\n"//+locationUpdates
+
+                lastKnownLocation = Pair(currentLocation.latitude, currentLocation.longitude)
             }
         }
     }
@@ -160,9 +170,11 @@ fun CurrentLocationContent(
                         locationUpdates = if (result == null) {
                             "No last known location. Try fetching the current location first"
                         } else {
+                            lastKnownLocation = Pair(result.latitude, result.longitude)
                             "Last known location is \n" + "lat : ${result.latitude}\n" +
                                     "long : ${result.longitude}\n" + "fetched at ${System.currentTimeMillis()}\n" +
                                     "Accuracy: ${result.accuracy}"
+
                         }
                     }
                 },
@@ -190,6 +202,8 @@ fun CurrentLocationContent(
                                         "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
 
                             Log.d(TAG, "Location Info: $locationUpdates")
+
+                            lastKnownLocation = Pair(fetchedLocation.latitude, fetchedLocation.longitude)
                         }
                     }
                 },
@@ -221,10 +235,43 @@ fun CurrentLocationContent(
                 Text(text = if (isButtonClicked) "Stop Location Updates" else "Request Location Updates")
             }
         }
-        item {/*
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(, 10f)
-            }*/
+/*        item {
+            Button(onClick = {
+                lastKnownLocation?.let { (latitude, longitude) ->
+                    val db = FirebaseFirestore.getInstance()
+                    val locationData = hashMapOf(
+                        "latitude" to latitude,
+                        "longitude" to longitude,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            db.collection("locations")
+                                .add(locationData)
+                                .await()
+                            Log.d(TAG, "Location sent to Firebase successfully")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error sending location to Firebase", e)
+                        }
+                    }
+                } ?: run {
+                    Log.w(TAG, "No location data available to send to Firebase")
+                }
+            }) {
+                Text(text = "Send Location to Firebase")
+            }
+        }*/
+        item {
+            Button(onClick = {
+                lastKnownLocation?.let { (latitude, longitude) ->
+                    firebaseHandler.sendLocationToFirebase(latitude, longitude)
+                } ?: run {
+                    Log.w(TAG, "No location data available to send to Firebase")
+                }
+            }) {
+                Text(text = "Send Location to Firebase")
+            }
         }
 
     }

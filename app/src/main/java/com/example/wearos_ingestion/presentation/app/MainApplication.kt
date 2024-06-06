@@ -9,6 +9,7 @@ const val PERMISSION = android.Manifest.permission.BODY_SENSORS
 const val LOCATIONPERMISSION = android.Manifest.permission.ACCESS_FINE_LOCATION
 
 class MainApplication : Application() {
+
     val healthServicesRepository by lazy { HealthServicesRepository(this) }
     val passiveDataRepository by lazy { PassiveDataRepository(this) }
 }

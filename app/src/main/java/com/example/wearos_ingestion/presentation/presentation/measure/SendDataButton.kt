@@ -16,6 +16,7 @@ import androidx.wear.compose.material.Icon
 import com.example.wearos_ingestion.presentation.service.FirebaseHandler
 import com.example.wearos_ingestion.presentation.theme.IngestionAppTheme
 
+/*
 @Composable
 fun SendDataButton(sensorData: String, onClick: () -> Unit) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -47,4 +48,4 @@ fun SendDataButtonPreview() {
             
         }
     }
-}
+}*/
